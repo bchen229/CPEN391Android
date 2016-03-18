@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="@color/darkred">
+    android:background="@android:color/background_dark">
 
     <!-- Paired Devices -->
     <TextView
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:background="#FFFFFF"
+        android:background="@color/primary_material_dark"
         android:padding="0dp">
     </ListView>
 
@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:background="#FFFFFF"
+        android:background="@color/primary_material_dark"
         android:padding="0dp">
     </ListView>
 

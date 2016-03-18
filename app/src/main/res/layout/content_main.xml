@@ -12,14 +12,33 @@
     tools:context="com.example.brian.thebluetooth.MainActivity"
     tools:showIn="@layout/activity_main">
 
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/bluetooth_button"
         android:id="@+id/button_bluetooth"
-        android:layout_marginTop="49dp"
+        android:layout_marginTop="128dp"
+        android:layout_below="@+id/analogClock"
+        android:layout_alignParentStart="true" />
+
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Message"-->
+        <!--android:id="@+id/button3"-->
+        <!--android:layout_alignBaseline="@+id/button2"-->
+        <!--android:layout_alignBottom="@+id/button2"-->
+        <!--android:layout_alignEnd="@+id/analogClock"-->
+        <!--android:layout_toEndOf="@+id/button" />-->
+
+    <AnalogClock
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/analogClock"
+        android:layout_marginTop="63dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -27,6 +46,7 @@
         android:text="Maps"
         android:id="@+id/button_maps"
         android:layout_below="@+id/button_bluetooth"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignEnd="@+id/button_bluetooth"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
