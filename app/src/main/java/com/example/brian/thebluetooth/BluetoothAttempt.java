@@ -67,7 +67,7 @@ public class BluetoothAttempt extends AppCompatActivity {
 
             // we are going to connect to the other device as a client
             // if we are already connected to a device, close connections
-            if(Connected == true)
+            if(Connected)
                 closeConnection(); // user defined fn to close streams and socket
 
             // get the selected bluetooth device based on position then connect to it
@@ -300,7 +300,6 @@ public class BluetoothAttempt extends AppCompatActivity {
 
         Log.d("Printing to bluetooth", "start handshake\n");
 
-        String s;
         while(!ReadFromBTDevice().equals("k")){
 
             WriteToBTDevice("o"); //setup
@@ -346,7 +345,7 @@ public class BluetoothAttempt extends AppCompatActivity {
                 }
             }
         } catch (IOException e) {
-            return new String("-- No Response --");
+            return "-- No Response --";
         }
         return s;
     }
