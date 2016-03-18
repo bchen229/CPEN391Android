@@ -8,7 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -268,7 +270,7 @@ public class BluetoothAttempt extends AppCompatActivity {
 
         // universal UUID for a serial profile RFCOMM blue tooth device
         // this is just one of those “things” that you have to do and just works
-        UUID MY_UUID = UUID.fromString ("00001101-0000-1000-8000-00805F9B34FB");
+        UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
         // Get a Bluetooth Socket to connect with the given BluetoothDevice
         try {
             // MY_UUID is the app's UUID string, also used by the server code
@@ -295,6 +297,60 @@ public class BluetoothAttempt extends AppCompatActivity {
         //create the input/output stream and record fact we have made a connection
         GetInputOutputStreamsForSocket();
         Connected = true ;
+
+        Log.d("Printing to bluetooth", "start handshake\n");
+
+        String s;
+        while(!ReadFromBTDevice().equals("k")){
+
+            WriteToBTDevice("o"); //setup
+
+        }
+
+        Log.d("Printing to bluetooth", "Responding");
+
+
+            WriteToBTDevice("a");
+            Log.d("recieved", "Writing acknowledge");
+
+
+
+    }
+
+    //
+// This function write a line of text (in the form of an array of bytes)
+// to the Bluetooth device and then sends the string “\r\n”
+// (required by the bluetooth dongle)
+//
+    public void WriteToBTDevice (String message) {
+        String s = new String("\r\n") ;
+        byte[] msgBuffer = message.getBytes();
+        byte[] newline = s.getBytes();
+
+        try {
+            mmOutStream.write(msgBuffer) ;
+            mmOutStream.write(newline) ;
+        } catch (IOException e) { }
+    }
+
+    public String ReadFromBTDevice() {
+        byte c;
+        String s = new String("");
+
+        try { // Read from the InputStream using polling and timeout
+            for (int i = 0; i < 200; i++) { // try to read for 2 seconds max
+                SystemClock.sleep(10);
+                if (mmInStream.available() > 0) {
+                    if ((c = (byte) mmInStream.read()) != '\r') // '\r' terminator
+                        s += (char) c; // build up string 1 byte by byte
+                    else
+                        return s;
+                }
+            }
+        } catch (IOException e) {
+            return new String("-- No Response --");
+        }
+        return s;
     }
 
     // gets the input/output stream associated with the current socket
