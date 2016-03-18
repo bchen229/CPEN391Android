@@ -6,4 +6,11 @@
     <string name="bluetooth_button">Bluetooth</string>
     <string name="map_button">Map Button</string>
     <string name="title_activity_map">Map Activity</string>
+    <string name="info_button">Info</string>
+    <string name="message_button">Messages</string>
+    <string name="message_activity">Messages</string>
+    <string name="info_activity">Messages</string>
+    <string name="title_activity_message">MessageActivity</string>
+    <string name="title_activity_info">InfoActivity</string>
+
 </resources>

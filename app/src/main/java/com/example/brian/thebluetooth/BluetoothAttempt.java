@@ -307,11 +307,9 @@ public class BluetoothAttempt extends AppCompatActivity {
 
         }
 
-        Log.d("Printing to bluetooth", "Responding");
-
-
-            WriteToBTDevice("a");
-            Log.d("recieved", "Writing acknowledge");
+        Log.d("Printing to bluetooth", "Writing acknowledge");
+        WriteToBTDevice("a");
+        Log.d("Printing to bluetooth", "Done!");
 
 
 

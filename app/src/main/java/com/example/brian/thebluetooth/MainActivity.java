@@ -2,6 +2,7 @@ package com.example.brian.thebluetooth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -22,11 +23,31 @@ public class MainActivity extends AppCompatActivity{
 
         Button bluetooth_button = (Button) findViewById(R.id.button_bluetooth);
         Button map_button = (Button) findViewById(R.id.button_maps);
+        Button button_message = (Button) findViewById(R.id.button_message);
+        Button button_info = (Button) findViewById(R.id.button_info);
 
         map_button.setOnClickListener(  new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        button_message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        button_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getApplicationContext(), InfoActivity.class);
                 startActivity(intent);
             }
         });
