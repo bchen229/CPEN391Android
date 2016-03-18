@@ -1,7 +1,9 @@
 <resources>
-    <string name="app_name">TheBluetooth</string>
+    <string name="app_name">Sprint1 Demo</string>
     <string name="action_settings">Settings</string>
     <string name="pairedDevices">Paired Devices</string>
     <string name="discoveredDevices">Discovered Devices</string>
     <string name="bluetooth_button">Bluetooth Button</string>
+    <string name="map_button">Map Button</string>
+    <string name="title_activity_map">Map Activity</string>
 </resources>

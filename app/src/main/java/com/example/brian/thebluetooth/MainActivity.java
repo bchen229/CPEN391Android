@@ -21,6 +21,15 @@ public class MainActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);
 
         Button bluetooth_button = (Button) findViewById(R.id.button_bluetooth);
+        Button map_button = (Button) findViewById(R.id.button_maps);
+
+        map_button.setOnClickListener(  new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                startActivity(intent);
+            }
+        });
 
         bluetooth_button.setOnClickListener(new View.OnClickListener() {
             @Override
