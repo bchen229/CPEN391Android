@@ -3,23 +3,29 @@ package com.example.brian.thebluetooth;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
-/**
- * Created by Brian on 2016-03-17.
- */
 public class MainActivity extends AppCompatActivity{
+
+    // declarations used for the navigation bar
+    private ListView mDrawerList;
+    private ArrayAdapter<String> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        // initialize the navigation bar
+        mDrawerList = (ListView)findViewById(R.id.navList);
+        addDrawerItems();
 
         Button bluetooth_button = (Button) findViewById(R.id.button_bluetooth);
         Button map_button = (Button) findViewById(R.id.button_maps);
@@ -75,6 +81,13 @@ public class MainActivity extends AppCompatActivity{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // helper function for adding items into the drawerList
+    private void addDrawerItems() {
+        String[] osArray = { "Bluetooth", "Maps", "Info", "Messages"};
+        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, osArray);
+        mDrawerList.setAdapter(mAdapter);
     }
 }
 

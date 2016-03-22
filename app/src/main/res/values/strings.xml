@@ -4,7 +4,7 @@
     <string name="pairedDevices">Paired Devices</string>
     <string name="discoveredDevices">Discovered Devices</string>
     <string name="bluetooth_button">Bluetooth</string>
-    <string name="map_button">Map Button</string>
+    <string name="map_button">Map</string>
     <string name="title_activity_map">Map Activity</string>
     <string name="info_button">Info</string>
     <string name="message_button">Messages</string>
