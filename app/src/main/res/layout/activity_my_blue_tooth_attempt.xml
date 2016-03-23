@@ -56,16 +56,6 @@
 
     </LinearLayout>
 
-    <fragment
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:name="com.example.brian.thebluetooth.NavigationBarFragment"
-        android:id="@+id/fragment2"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        tools:layout="@layout/navigation_bar_fragment"
-        android:layout_alignParentTop="true" />
-
     <!-- Discovered Devices -->
 
 </RelativeLayout>

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-        <!-- main content on the page -->
+    <!-- main content on the page -->
     <fragment
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,17 +16,23 @@
         tools:layout="@layout/navigation_bar_fragment"
         android:layout_alignParentBottom="true" />
 
-    <android.support.design.widget.CoordinatorLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            tools:context="com.example.brian.thebluetooth.MainActivity">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-            <!-- buttons and clock -->
-            <include layout="@layout/content_main" />
+        <android.support.design.widget.CoordinatorLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                tools:context="com.example.brian.thebluetooth.MainActivity">
 
-        </android.support.design.widget.CoordinatorLayout>
+                <!-- buttons and clock -->
+                <include layout="@layout/content_main" />
+
+            </android.support.design.widget.CoordinatorLayout>
+    </LinearLayout>
 
 </RelativeLayout>

@@ -2,6 +2,7 @@ package com.example.brian.thebluetooth;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ public class NavigationBarFragment extends Fragment{
         View view = inflater.inflate(R.layout.navigation_bar_fragment, container, false);
         // initialize the navigation bar
         mDrawerList = (ListView) view.findViewById(R.id.navList);
+        mDrawerList.setBackgroundColor(Color.BLACK);
         addDrawerItems();
 
         return view;
