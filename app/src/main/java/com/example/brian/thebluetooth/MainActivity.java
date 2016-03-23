@@ -2,15 +2,14 @@ package com.example.brian.thebluetooth;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Message;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -85,9 +84,39 @@ public class MainActivity extends AppCompatActivity{
 
     // helper function for adding items into the drawerList
     private void addDrawerItems() {
-        String[] osArray = { "Bluetooth", "Maps", "Info", "Messages"};
-        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, osArray);
+        String[] buttonArray = { "Bluetooth", "Maps", "Info", "Messages"};
+        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_selectable_list_item, buttonArray);
         mDrawerList.setAdapter(mAdapter);
+
+        mDrawerList.setOnItemClickListener(new OnItemClickListener() {
+            // add listeners to each item on the list
+            public void onItemClick(AdapterView<?> listView, View itemView, int itemPosition, long itemId)
+            {
+                String selectedItem =(mDrawerList.getItemAtPosition(itemPosition).toString());
+                Intent intent;
+
+                switch(selectedItem) {
+                    case "Bluetooth":
+                        intent = new Intent(getApplicationContext(), BluetoothAttempt.class);
+                        startActivity(intent);
+                        break;
+                    case "Maps":
+                        intent = new Intent(getApplicationContext(), MapActivity.class);
+                        startActivity(intent);
+                        break;
+                    case "Info":
+                        intent = new Intent(getApplicationContext(), InfoActivity.class);
+                        startActivity(intent);
+                        break;
+                    case "Messages":
+                        intent = new Intent(getApplicationContext(), MessageActivity.class);
+                        startActivity(intent);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
     }
 }
 
