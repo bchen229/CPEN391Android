@@ -1,5 +1,6 @@
 package com.example.brian.thebluetooth;
 
+import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -9,12 +10,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -26,7 +30,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 
-public class BluetoothAttempt extends AppCompatActivity {
+public class BluetoothAttempt extends Fragment {
 
     // two dynamic arrays of strings (populate at run time)
     private ArrayList<String> myPairedDevicesStringArray = new ArrayList<>();
@@ -93,32 +97,41 @@ public class BluetoothAttempt extends AppCompatActivity {
     private boolean Connected = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_blue_tooth_attempt);
+    public void onCreate(Bundle savedInstance){
+        super.onCreate(savedInstance);
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // get the context for the application
-        context = getApplicationContext();
+        View view = inflater.inflate(R.layout.activity_my_blue_tooth_attempt, container, false);
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+        context = super.getActivity();
         // This call returns a handle to the one bluetooth device within your Android device
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         // check to see if your android device even has a bluetooth device !!!!,
         if (mBluetoothAdapter == null) {
             Toast toast = Toast.makeText(context, "No Bluetooth !!", Toast.LENGTH_LONG);
             toast.show();
-            finish(); // if no bluetooth device on this tablet don’t go any further.
-            return ;
+            // if no bluetooth device on this tablet don’t go any further.
+            return;
         }
 
         // create the new adaptors passing important params, such
         // as context, android row style and the array of strings to display
-        myPairedArrayAdapter = new MyCustomArrayAdaptor(this,
+        myPairedArrayAdapter = new MyCustomArrayAdaptor(context,
                 android.R.layout.simple_list_item_1, myPairedDevicesStringArray);
-        myDiscoveredArrayAdapter = new MyCustomArrayAdaptor(this,
+        myDiscoveredArrayAdapter = new MyCustomArrayAdaptor(context,
                 android.R.layout.simple_list_item_1, myDiscoveredDevicesStringArray);
 
         // get handles to the two list views in the Activity main layout
-        ListView PairedlistView = (ListView) findViewById( R.id.pairedDevicesList );
-        ListView DiscoveredlistView = (ListView) findViewById( R.id.discoveredDevicesList );
+        ListView PairedlistView = (ListView) getView().findViewById( R.id.pairedDevicesList );
+        ListView DiscoveredlistView = (ListView) getView().findViewById( R.id.discoveredDevicesList );
 
         // add some action listeners for when user clicks on row in either list view
         PairedlistView.setOnItemClickListener (mPairedClickedHandler);
@@ -133,13 +146,13 @@ public class BluetoothAttempt extends AppCompatActivity {
 
         // If the bluetooth device is not enabled, let’s turn it on
         if (!mBluetoothAdapter.isEnabled()) {
-        // create a new intent that will ask the bluetooth adaptor to “enable” itself.
-        // A dialog box will appear asking if you want turn on the bluetooth device
+            // create a new intent that will ask the bluetooth adaptor to “enable” itself.
+            // A dialog box will appear asking if you want turn on the bluetooth device
             Intent enableBtIntent = new Intent( BluetoothAdapter.ACTION_REQUEST_ENABLE );
 
-        // REQUEST_ENABLE_BT below is a constant (defined as '1 - but could be anything)
-        // When the “activity” is run and finishes, Android will run your onActivityResult()
-        // function (see next page) where you can determine if it was successful or not
+            // REQUEST_ENABLE_BT below is a constant (defined as '1 - but could be anything)
+            // When the “activity” is run and finishes, Android will run your onActivityResult()
+            // function (see next page) where you can determine if it was successful or not
 
             startActivityForResult (enableBtIntent, REQUEST_ENABLE_BT);
         }
@@ -149,29 +162,32 @@ public class BluetoothAttempt extends AppCompatActivity {
                 String action = intent.getAction();
                 BluetoothDevice newDevice;
 
-                if ( action.equals(BluetoothDevice.ACTION_FOUND) ) { // If a new BT device found
-                    // Intent will contain discovered Bluetooth Device so go and get it
-                    newDevice = intent.getParcelableExtra ( BluetoothDevice.EXTRA_DEVICE );
+                switch(action) {
+                    case BluetoothDevice.ACTION_FOUND: // If a new BT device found
+                        // Intent will contain discovered Bluetooth Device so go and get it
+                        newDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
-                    // Add the name and address to the custom array adapter to show in a ListView
-                    String theDevice = new String( newDevice.getName() +
-                            "\nMAC Address = " + newDevice.getAddress());
+                        // Add the name and address to the custom array adapter to show in a ListView
+                        String theDevice = newDevice.getName() +
+                                "\nMAC Address = " + newDevice.getAddress();
 
-                    Toast.makeText(context, theDevice, Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, theDevice, Toast.LENGTH_LONG).show();
 
-                    //add the new device and string details to the two arrays (page 15)
-                    Discovereddevices.add ( newDevice );
-                    myDiscoveredDevicesStringArray.add ( theDevice );
+                        //add the new device and string details to the two arrays (page 15)
+                        Discovereddevices.add(newDevice);
+                        myDiscoveredDevicesStringArray.add(theDevice);
 
-                    // notify array adaptor that the contents of String Array have changed
-                    myDiscoveredArrayAdapter.notifyDataSetChanged ();
-                }
-                // visual feedback for user
-                else if (action.equals(BluetoothAdapter.ACTION_DISCOVERY_STARTED)) {
-                    Toast.makeText(context, "Discovery Started", Toast.LENGTH_LONG).show();
-                }
-                else if (action.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED) ) {
-                    Toast.makeText(context, "Discovery Finished", Toast.LENGTH_LONG).show();
+                        // notify array adaptor that the contents of String Array have changed
+                        myDiscoveredArrayAdapter.notifyDataSetChanged();
+                        break;
+                    case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
+                        Toast.makeText(context, "Discovery Started", Toast.LENGTH_LONG).show();
+                        break;
+                    case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
+                        Toast.makeText(context, "Discovery Finished", Toast.LENGTH_LONG).show();
+                        break;
+                    default:
+                        break;
                 }
             }
         };
@@ -186,9 +202,9 @@ public class BluetoothAttempt extends AppCompatActivity {
         // register our broadcast receiver so it gets called every time
         // a new bluetooth device is found or discovery starts or finishes
         // we should unregister it again when the app ends in onDestroy() - see later
-        registerReceiver (mReceiver, filterFound);
-        registerReceiver (mReceiver, filterStart);
-        registerReceiver (mReceiver, filterStop);
+        context.registerReceiver (mReceiver, filterFound);
+        context.registerReceiver (mReceiver, filterStart);
+        context.registerReceiver (mReceiver, filterStop);
 
         Set< BluetoothDevice > thePairedDevices = mBluetoothAdapter.getBondedDevices();
         // If there are devices that have already been paired
@@ -199,8 +215,8 @@ public class BluetoothAttempt extends AppCompatActivity {
             while ( iter.hasNext() ) { // while at least one more device
                 aNewdevice = iter.next(); // get next element in set
                 // Add the name and address to an array adapter to show in a ListView
-                String PairedDevice = new String( aNewdevice.getName ()
-                        + "\nMAC Address = " + aNewdevice.getAddress ());
+                String PairedDevice = aNewdevice.getName ()
+                        + "\nMAC Address = " + aNewdevice.getAddress();
 
                 //add the new device details to the array
                 Paireddevices.add (aNewdevice);
@@ -216,13 +232,14 @@ public class BluetoothAttempt extends AppCompatActivity {
         // we wrote earlier will be called each time we discover a new device
         // don't make this call if you only want to show paired devices
         mBluetoothAdapter.startDiscovery();
+
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        inflater.inflate(R.menu.menu_main, menu);
+        super.onCreateOptionsMenu(menu,inflater);
     }
 
     @Override
@@ -242,9 +259,8 @@ public class BluetoothAttempt extends AppCompatActivity {
 
 
     public void onDestroy() {
+        super.getActivity().unregisterReceiver ( mReceiver ); // make sure we unregister
         super.onDestroy();
-        unregisterReceiver ( mReceiver ); // make sure we unregister
-        // our broadcast receiver
     }
 
     void closeConnection() {
@@ -320,7 +336,7 @@ public class BluetoothAttempt extends AppCompatActivity {
 // (required by the bluetooth dongle)
 //
     public void WriteToBTDevice (String message) {
-        String s = new String("\r\n") ;
+        String s = "\r\n" ;
         byte[] msgBuffer = message.getBytes();
         byte[] newline = s.getBytes();
 
@@ -332,7 +348,7 @@ public class BluetoothAttempt extends AppCompatActivity {
 
     public String ReadFromBTDevice() {
         byte c;
-        String s = new String("");
+        String s = "";
 
         try { // Read from the InputStream using polling and timeout
             for (int i = 0; i < 200; i++) { // try to read for 2 seconds max
