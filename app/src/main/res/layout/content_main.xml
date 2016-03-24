@@ -19,41 +19,4 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/bluetooth_button"
-        android:id="@+id/button_bluetooth"
-        android:layout_marginTop="48dp"
-        android:layout_below="@+id/analogClock"
-        android:layout_alignParentStart="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/map_button"
-        android:id="@+id/button_maps"
-        android:layout_below="@+id/button_bluetooth"
-        android:layout_alignEnd="@+id/button_bluetooth"
-        android:layout_alignParentStart="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/info_button"
-        android:id="@+id/button_info"
-        android:layout_below="@+id/button_maps"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/button_maps" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/message_button"
-        android:id="@+id/button_message"
-        android:layout_below="@+id/button_info"
-
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/button_info" />
-
 </RelativeLayout>

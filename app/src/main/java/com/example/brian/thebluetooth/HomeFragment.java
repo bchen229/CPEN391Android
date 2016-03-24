@@ -1,16 +1,16 @@
 package com.example.brian.thebluetooth;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Navigation bar class for the swipe
+ * Created by Brian on 2016-03-23.
  */
-public class NavigationBarFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -1,64 +1,41 @@
 package com.example.brian.thebluetooth;
 
-import android.content.Intent;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class MainActivity extends AppCompatActivity{
 
+    // declarations used for the navigation bar
+    String[] buttonArray = {"Home", "Bluetooth"};
+    //, "Maps", "Info", "Messages"
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+
+    ArrayAdapter<String> mAdapter;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button bluetooth_button = (Button) findViewById(R.id.button_bluetooth);
-        Button map_button = (Button) findViewById(R.id.button_maps);
-        Button button_message = (Button) findViewById(R.id.button_message);
-        Button button_info = (Button) findViewById(R.id.button_info);
+        // initialize the navigation bar
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.navList);
+        if(mDrawerList != null) {
+            addDrawerItems();
+        }
 
-        map_button.setOnClickListener(  new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MapActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        button_message.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        button_info.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(getApplicationContext(), InfoActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        bluetooth_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(getApplicationContext(), BluetoothAttempt.class);
-                startActivity(intent);
-            }
-        });
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -72,6 +49,46 @@ public class MainActivity extends AppCompatActivity{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // Swaps fragments in the main content view
+    private void selectItem(int position) {
+
+        Fragment fragment = new HomeFragment();
+
+        switch(position) {
+            case 1:
+                fragment = new BluetoothAttempt();
+                break;
+            default:
+                break;
+        }
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame, fragment)
+                .commit();
+
+        // Highlight the selected item, update the title, and close the drawer
+        mDrawerList.setItemChecked(position, true);
+        setTitle(buttonArray[position]);
+        mDrawerLayout.closeDrawer(mDrawerList);
+    }
+
+    // helper function for adding items into the drawerList
+    private void addDrawerItems() {
+        mAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_selectable_list_item, buttonArray);
+        mDrawerList.setAdapter(mAdapter);
+
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            // add listeners to each item on the list
+            public void onItemClick(AdapterView parent, View view, int position, long id)
+            {
+                selectItem(position);
+            }
+        });
     }
 }
 

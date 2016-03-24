@@ -29,13 +29,13 @@ import java.util.UUID;
 public class BluetoothAttempt extends AppCompatActivity {
 
     // two dynamic arrays of strings (populate at run time)
-    private ArrayList<String> myPairedDevicesStringArray = new ArrayList<String>();
-    private ArrayList<String> myDiscoveredDevicesStringArray = new ArrayList<String>();
+    private ArrayList<String> myPairedDevicesStringArray = new ArrayList<>();
+    private ArrayList<String> myDiscoveredDevicesStringArray = new ArrayList<>();
 
     private BroadcastReceiver mReceiver ; // handle to BroadCastReceiver object
 
-    private ArrayList < BluetoothDevice > Paireddevices = new ArrayList < BluetoothDevice > ( ) ;
-    private ArrayList <BluetoothDevice> Discovereddevices = new ArrayList < BluetoothDevice > ( ) ;
+    private ArrayList < BluetoothDevice > Paireddevices = new ArrayList <> ( ) ;
+    private ArrayList <BluetoothDevice> Discovereddevices = new ArrayList <> ( ) ;
 
     // A constant that we use to determine if our request to turn on bluetooth worked
     private final static int REQUEST_ENABLE_BT = 1;
