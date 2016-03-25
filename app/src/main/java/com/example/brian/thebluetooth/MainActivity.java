@@ -16,7 +16,7 @@ import android.widget.ListView;
 public class MainActivity extends AppCompatActivity{
 
     // declarations used for the navigation bar
-    String[] buttonArray = {"Home", "Bluetooth"};
+    String[] buttonArray = {"Home", "Bluetooth", "Map"};
     //, "Maps", "Info", "Messages"
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
@@ -111,6 +111,9 @@ public class MainActivity extends AppCompatActivity{
         switch(position) {
             case 1:
                 fragment = new BluetoothAttempt();
+                break;
+            case 2:
+                fragment = new MapActivity();
                 break;
             default:
                 break;
