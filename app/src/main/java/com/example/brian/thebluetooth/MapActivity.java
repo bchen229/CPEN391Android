@@ -1,6 +1,7 @@
 package com.example.brian.thebluetooth;
 
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,11 +10,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
@@ -22,9 +27,15 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private MapView mapView;
-    private Thread thread;
+    Marker mkr;
+    private Thread thread1, thread2;
     private Handler handler = new Handler();
+    private Handler handlerUI = new Handler();
     private String TAG = "Thread Task";
+    double Lat = 49.261818;
+    double Lon = -123.249698;
+    double homeLat = 49.261818;
+    double homeLong = -123.249698;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,14 +50,33 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
 
         mapView.getMapAsync(this);
 
-        thread = new Thread() {
+        thread1 = new Thread() {
             public void run() {
-                GPSHandler();
+                //GPSHandler();
                 Log.d(TAG, "GPS Updated");
-                handler.postDelayed(this, 1000);
+                handler.postDelayed(this, 10000);
             }
         };
-        thread.run();
+        thread1.start();
+
+
+        new Thread(new Runnable() {
+            public void run() {
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        handler.postDelayed(this, 10000);
+
+                        LatLng van = new LatLng(Lat, Lon);
+                        //mMap.clear();
+                        mMap.addMarker(new MarkerOptions().position(van).title("Your Location"));
+                    }
+                });
+
+            }
+        }).start();
+
         return view;
     }
 
@@ -55,9 +85,22 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
         mMap = googleMap;
 
         // Add a marker in Sydney, Australia, and move the camera.
-        LatLng van = new LatLng(49.2611 , -123.253);
-        mMap.addMarker(new MarkerOptions().position(van).title("West Coast"));
+        LatLng van = new LatLng(Lat, Lon);
+
+
+        // Instantiates a new CircleOptions object and defines the center and radius
+        CircleOptions circleOptions = new CircleOptions().center(new LatLng(homeLat, homeLong)).radius(50); // In meters
+        circleOptions.strokeWidth(5);
+        circleOptions.fillColor(Color.argb(20, 50, 0, 255));
+        // Get back the mutable Circle
+        Circle circle = mMap.addCircle(circleOptions);
+
+        mMap.addMarker(new MarkerOptions().position(van).title("Your Location"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(van));
+        float zoomLevel = new Float(16);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(van, zoomLevel));
+
+
     }
 
     @Override
@@ -83,15 +126,16 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
 // to the Bluetooth device and then sends the string “\r\n”
 // (required by the bluetooth dongle)
 //
-    public void WriteToBTDevice (String message) {
-        String s = "\r\n" ;
+    public void WriteToBTDevice(String message) {
+        String s = "\r\n";
         byte[] msgBuffer = message.getBytes();
         byte[] newline = s.getBytes();
 
         try {
-            BluetoothAttempt.mmOutStream.write(msgBuffer) ;
-            BluetoothAttempt.mmOutStream.write(newline) ;
-        } catch (IOException e) { }
+            BluetoothAttempt.mmOutStream.write(msgBuffer);
+            BluetoothAttempt.mmOutStream.write(newline);
+        } catch (IOException e) {
+        }
     }
 
     public String ReadFromBTDevice() {
@@ -114,29 +158,46 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
         return s;
     }
 
-    private void GPSHandler(){
+    private void GPSHandler() {
 
         String check;
         String command = ";GPS;";
-        String coordinates;
+        String Latitude;
+        String Longitude;
         String send = ";send;";
 
         //Fix this once we have bluetooth
+        while (!(check = ReadFromBTDevice()).equals("ack")) {
 
-       /* WriteToBTDevice(command);
-
-        if((check = ReadFromBTDevice()).equals("ack")){
-
-            WriteToBTDevice(send);
-
-            coordinates = ReadFromBTDevice();
-
-            //Parse Here
-            //Post Here
-
+            WriteToBTDevice(command);
 
         }
-*/
+        WriteToBTDevice(send);
+        Latitude = ReadFromBTDevice();
+        Latitude = Latitude.replaceAll("\n", "");
+        Latitude = Latitude.replaceAll(",", "");
+        Latitude = Latitude.replaceAll("N", "");
+
+        WriteToBTDevice(send);
+
+        Longitude = ReadFromBTDevice();
+        Longitude = Longitude.replaceAll("\n", "");
+        Longitude = Longitude.replaceAll(",", "");
+        Longitude = Longitude.replaceAll("W", "");
+
+        Log.d(TAG, check);
+        Log.d("Latitude:", Latitude);
+        Log.d("Longitude:", Longitude);
+
+        if (Latitude != null && !Latitude.isEmpty()) {
+            Lat = Double.parseDouble(Latitude);
+        }
+
+        if (Longitude != null && !Longitude.isEmpty()) {
+            Lon = Double.parseDouble(Longitude);
+            Lon = (-1) * Lon;
+
+        }
 
     }
 

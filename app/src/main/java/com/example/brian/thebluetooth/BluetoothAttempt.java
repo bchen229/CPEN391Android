@@ -316,14 +316,14 @@ public class BluetoothAttempt extends Fragment {
 
         Log.d("Printing to bluetooth", "start handshake\n");
 
-        while(!ReadFromBTDevice().equals("k")){
+        String check;
+        while(!(check = ReadFromBTDevice()).equals("ack")){
 
-            WriteToBTDevice("o"); //setup
+            WriteToBTDevice(";a;"); //setup
 
         }
+        Log.d("Ack check",check);
 
-        Log.d("Printing to bluetooth", "Writing acknowledge");
-        WriteToBTDevice("a");
         Log.d("Printing to bluetooth", "Done!");
 
 
