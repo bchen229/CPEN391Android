@@ -52,7 +52,7 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
 
         thread1 = new Thread() {
             public void run() {
-                //GPSHandler();
+                GPSHandler();
                 Log.d(TAG, "GPS Updated");
                 handler.postDelayed(this, 10000);
             }
@@ -69,8 +69,7 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
                         handler.postDelayed(this, 10000);
 
                         LatLng van = new LatLng(Lat, Lon);
-                        //mMap.clear();
-                        mMap.addMarker(new MarkerOptions().position(van).title("Your Location"));
+                        mkr.setPosition(new LatLng(Lat, Lon));
                     }
                 });
 
@@ -95,8 +94,10 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
         // Get back the mutable Circle
         Circle circle = mMap.addCircle(circleOptions);
 
-        mMap.addMarker(new MarkerOptions().position(van).title("Your Location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(van));
+        mkr =  mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(homeLat, homeLong))
+                .title("UBC"));
+        mkr.setPosition(new LatLng(homeLat, homeLong));
         float zoomLevel = new Float(16);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(van, zoomLevel));
 
