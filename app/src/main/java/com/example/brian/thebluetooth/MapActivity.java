@@ -28,9 +28,8 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private MapView mapView;
     Marker mkr;
-    private Thread thread1, thread2;
+    private Thread thread1;
     private Handler handler = new Handler();
-    private Handler handlerUI = new Handler();
     private String TAG = "Thread Task";
     double Lat = 49.261818;
     double Lon = -123.249698;
@@ -100,7 +99,6 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
         mkr.setPosition(new LatLng(homeLat, homeLong));
         float zoomLevel = new Float(16);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(van, zoomLevel));
-
 
     }
 
