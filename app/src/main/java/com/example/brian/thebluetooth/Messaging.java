@@ -8,12 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,10 +18,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Messaging extends Fragment {
     EditText msg;
@@ -36,19 +31,23 @@ public class Messaging extends Fragment {
     private Thread RX_THREAD;
     private Handler RX_HANDLER = new Handler();
     LinearLayout llLayout;
-    ArrayList<String> listItems=new ArrayList<String>();
+    ArrayList<String> listItems=new ArrayList<>();
     ArrayAdapter<String> adapter;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FragmentActivity faActivity = (FragmentActivity) super.getActivity();
         llLayout = (LinearLayout) inflater.inflate(R.layout.activity_messaging, container, false);
         send = (Button) llLayout.findViewById(R.id.send_button);
 
         msg = (EditText) llLayout.findViewById(R.id.enter_message);
 
-        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, listItems);
+        if (savedInstanceState != null) {
+            String[] values = savedInstanceState.getStringArray("messageStrings");
+            if (values != null) {
+                Collections.addAll(listItems, values);
+            }
+        }
+        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, listItems);
 
         ListView chat = (ListView) llLayout.findViewById(R.id.listView);
         chat.setAdapter(adapter);
@@ -68,7 +67,7 @@ public class Messaging extends Fragment {
                 listenerHandler.postDelayed(this, 10000);
             }
         };
-        listenerThread.start();
+//        listenerThread.start();
 
 
         send.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +84,18 @@ public class Messaging extends Fragment {
         });
 
         return llLayout; // We must return the loaded Layout
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedState) {
+        super.onSaveInstanceState(savedState);
+
+        // save the strings
+        String[] values = new String[listItems.size()];
+        for(int i = 0; i < listItems.size(); i++){
+            values[i] = listItems.get(i);
+        }
+        savedState.putStringArray("messageStrings", values);
     }
 
     public void WriteToBTDevice(String message) {
@@ -174,7 +185,6 @@ public class Messaging extends Fragment {
             myNotificationManager.notify(0, notification);
 
         }
-
 
     }
 }
