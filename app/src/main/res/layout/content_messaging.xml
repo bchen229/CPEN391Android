@@ -22,7 +22,9 @@
         android:layout_above="@+id/send_button"
         android:layout_alignParentRight="true"
         android:layout_gravity="right"
-        android:clickable="false" />
+        android:clickable="false"
+        android:transcriptMode="alwaysScroll"
+        android:stackFromBottom="true"/>
 
     <Button
         android:layout_width="wrap_content"
