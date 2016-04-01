@@ -67,6 +67,14 @@ public class MainActivity extends AppCompatActivity{
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
+
+        // Set initial fragment to home
+        if(savedInstanceState == null) {
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame, new HomeFragment())
+                    .commit();
+        }
     }
 
     @Override
