@@ -62,15 +62,6 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".MessageActivity"
-            android:label="@string/title_activity_message"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.brian.thebluetooth.MainActivity" />
-        </activity>
-        <activity
             android:name=".InfoActivity"
             android:label="@string/title_activity_info"
             android:parentActivityName=".MainActivity"
