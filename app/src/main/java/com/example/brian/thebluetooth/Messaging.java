@@ -26,21 +26,20 @@ import java.util.Collections;
 public class Messaging extends Fragment {
     EditText msg;
     Button send;
-    private Thread listenerThread;
-    private Handler listenerHandler = new Handler();
     private Thread RX_THREAD;
     private Handler RX_HANDLER = new Handler();
     LinearLayout llLayout;
     ArrayList<String> listItems=new ArrayList<>();
     ArrayAdapter<String> adapter;
+    boolean runRX = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         llLayout = (LinearLayout) inflater.inflate(R.layout.activity_messaging, container, false);
         send = (Button) llLayout.findViewById(R.id.send_button);
-
         msg = (EditText) llLayout.findViewById(R.id.enter_message);
 
+        runRX = true;
         if (savedInstanceState != null) {
             String[] values = savedInstanceState.getStringArray("messageStrings");
             if (values != null) {
@@ -54,21 +53,14 @@ public class Messaging extends Fragment {
 
         RX_THREAD = new Thread() {
             public void run() {
-                RXHandler();
-                Log.d("Chat:", "Polling");
-                RX_HANDLER.postDelayed(this, 3000);
+                if (runRX){
+                    RXHandler();
+                    Log.d("Chat:", "Polling");
+                    RX_HANDLER.postDelayed(this, 3000);
+                }
             }
         };
         RX_THREAD.start();
-
-        listenerThread = new Thread() {
-            public void run() {
-                //Listener();
-                listenerHandler.postDelayed(this, 10000);
-            }
-        };
-//        listenerThread.start();
-
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +76,14 @@ public class Messaging extends Fragment {
         });
 
         return llLayout; // We must return the loaded Layout
+    }
+
+    @Override
+    public void onPause() {
+        Log.v("LOL", "onPause");
+        runRX = false;
+        RX_THREAD.interrupt();
+        super.onPause();
     }
 
     @Override
@@ -139,52 +139,47 @@ public class Messaging extends Fragment {
         check = ReadFromBTDevice();
 
         if (check.equals("y")) {
-
             WriteToBTDevice(";send;");
-
             message = ReadFromBTDevice();
-
             message = "Patient: " + message;
             // this line adds the data of your EditText and puts in your array
             listItems.add(message);
             // next thing you have to do is check if your adapter has changed
             adapter.notifyDataSetChanged();
-
-            NotificationManager myNotificationManager=(NotificationManager)getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-
+            NotificationManager myNotificationManager=(NotificationManager)getActivity()
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(getActivity());
             Notification notification = builder.build();
             notification.sound = Uri.parse("android.resource://"
                     + getActivity().getPackageName() + "/" + R.raw.msn);
-
             myNotificationManager.notify(0, notification);
         }
     }
 
-    private void Listener() {
-
-        String check = ReadFromBTDevice();
-
-        if(check.equals(";")){
-
-            String message = "Patient: " + ReadFromBTDevice();
-
-            listItems.add(message);
-            // next thing you have to do is check if your adapter has changed
-            adapter.notifyDataSetChanged();
-
-            NotificationManager myNotificationManager=(NotificationManager)getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-
-            NotificationCompat.Builder builder =
-                    new NotificationCompat.Builder(getActivity());
-            Notification notification = builder.build();
-            notification.sound = Uri.parse("android.resource://"
-                    + getActivity().getPackageName() + "/" + R.raw.msn);
-
-            myNotificationManager.notify(0, notification);
-
-        }
-
-    }
+//    private void Listener() {
+//
+//        String check = ReadFromBTDevice();
+//
+//        if(check.equals(";")){
+//
+//            String message = "Patient: " + ReadFromBTDevice();
+//
+//            listItems.add(message);
+//            // next thing you have to do is check if your adapter has changed
+//            adapter.notifyDataSetChanged();
+//
+//            NotificationManager myNotificationManager=(NotificationManager)getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+//
+//            NotificationCompat.Builder builder =
+//                    new NotificationCompat.Builder(getActivity());
+//            Notification notification = builder.build();
+//            notification.sound = Uri.parse("android.resource://"
+//                    + getActivity().getPackageName() + "/" + R.raw.msn);
+//
+//            myNotificationManager.notify(0, notification);
+//
+//        }
+//
+//    }
 }

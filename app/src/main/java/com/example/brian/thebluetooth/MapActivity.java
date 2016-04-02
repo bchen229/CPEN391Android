@@ -1,25 +1,16 @@
 package com.example.brian.thebluetooth;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.transition.Slide;
-import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.MotionEvent;
-import com.google.android.gms.location.LocationListener;
-
-
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -38,28 +29,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MapActivity extends Fragment implements OnMapReadyCallback {
 
-    int THREAD_PRIORITY_BACKGROUND = 10;
-    int THREAD_PRIORITY_LOWEST = 19;
     private GoogleMap mMap;
     private MapView mapView;
     Marker mkr;
     Marker mkrHome;
     private Thread thread1;
+    private Thread thread2;
     private Handler handler = new Handler();
     private String TAG = "Thread Task";
     double Lat = 49.261818;
     double Lon = -123.042698;
     double homeLat = 49.261818;
-    //double homeLong = -123.249698;
     double homeLong = -123.049698;
     LatLng homeLatLng = new LatLng(homeLat, homeLong);
     LatLng testLatLng = new LatLng(Lat,Lon);
     int distanceFlag = 0;
+    private boolean runGPS = true;
 
 
     @Override
@@ -72,22 +60,26 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
         mapView = (MapView) view.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
-
+        runGPS = true;
 
         thread1 = new Thread( new Runnable() {
             public void run() {
-                GPSHandler();
-                Log.d(TAG, "GPS Updated");
-                handler.postDelayed(this, 10000);
+                if (runGPS){
+                    GPSHandler();
+                    Log.d(TAG, "GPS Updated");
+                    try {
+                        Thread.sleep(10000);
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
-        thread1.setPriority(THREAD_PRIORITY_BACKGROUND);
         thread1.start();
 
 
-        new Thread(new Runnable() {
+        thread2 = new Thread(new Runnable() {
             public void run() {
-
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -98,11 +90,7 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
                             distanceFlag = 0;
                             startActivity(new Intent(getActivity(), Pop.class));
                             getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-
-
                         }
-
-
                         mMap.clear();
 
                         LatLng van = new LatLng(Lat, Lon);
@@ -132,10 +120,17 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
                 });
 
             }
-        }).start();
-
-
+        });
+        thread2.start();
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        thread1.interrupt();
+        thread2.interrupt();
+        runGPS = false;
+        super.onPause();
     }
 
     private String getMapsApiDirectionsUrl() {
@@ -214,7 +209,7 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
                     double lat = Double.parseDouble(point.get("lat"));
                     double lng = Double.parseDouble(point.get("lng"));
                     LatLng position = new LatLng(lat, lng);
-                    Log.d("LATLNG: ", position.toString());
+                    //Log.d("LATLNG: ", position.toString());
                     points.add(position);
                 }
 
@@ -231,7 +226,7 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
 
         mMap.addPolyline((new PolylineOptions())
                 .add( homeLatLng,new LatLng(Lat, Lon)
-                        ).width(5).color(Color.BLUE)
+                ).width(5).color(Color.BLUE)
                 .geodesic(true));
 
     }
@@ -258,7 +253,7 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
         Circle circle = mMap.addCircle(circleOptions);
 
         try{
-        mMap.setMyLocationEnabled(true);
+            mMap.setMyLocationEnabled(true);
         }
         catch(SecurityException E){}
         //LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -346,34 +341,39 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
         //Fix this once we have bluetooth
         while (!(check = ReadFromBTDevice()).equals("a")) {
             WriteToBTDevice(command);
+        }
+        WriteToBTDevice(send);
+
+        String longLat = ReadFromBTDevice();
+        String[] longLatArray = longLat.split("N");
+
+        if(longLatArray.length < 2) {
+            return;
+        }
+
+        Latitude = longLatArray[0];
+        Latitude = Latitude.replaceAll("\n", "");
+        Latitude = Latitude.replaceAll("[A-Za-z]", "");
+        Latitude = Latitude.replace(",", "");
+
+        Longitude = longLatArray[1];
+        Longitude = Longitude.replaceAll("\n", "");
+        Longitude = Longitude.replaceAll("[A-Za-z]", "");
+        Longitude = Longitude.replaceAll(",", "");
+
+        Log.d(TAG, check);
+        Log.d("Latitude:", Latitude);
+        Log.d("Longitude:", Longitude);
+
+        if (Latitude != null && !Latitude.isEmpty()) {
+            Lat = Double.parseDouble(Latitude);
+        }
+
+        if (Longitude != null && !Longitude.isEmpty()) {
+            Lon = Double.parseDouble(Longitude);
+            Lon = (-1) * Lon;
 
         }
-            WriteToBTDevice(send);
-            Latitude = ReadFromBTDevice();
-            Latitude = Latitude.replaceAll("\n", "");
-            Latitude = Latitude.replaceAll(",", "");
-            Latitude = Latitude.replaceAll("N", "");
-
-            WriteToBTDevice(send);
-
-            Longitude = ReadFromBTDevice();
-            Longitude = Longitude.replaceAll("\n", "");
-            Longitude = Longitude.replaceAll(",", "");
-            Longitude = Longitude.replaceAll("W", "");
-
-            Log.d(TAG, check);
-            Log.d("Latitude:", Latitude);
-            Log.d("Longitude:", Longitude);
-
-            if (Latitude != null && !Latitude.isEmpty()) {
-                Lat = Double.parseDouble(Latitude);
-            }
-
-            if (Longitude != null && !Longitude.isEmpty()) {
-                Lon = Double.parseDouble(Longitude);
-                Lon = (-1) * Lon;
-
-            }
 
 
     }
