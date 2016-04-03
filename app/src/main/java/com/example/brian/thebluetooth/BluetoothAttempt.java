@@ -116,7 +116,7 @@ public class BluetoothAttempt extends Fragment {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         // check to see if your android device even has a bluetooth device !!!!,
         if (mBluetoothAdapter == null) {
-            Toast toast = Toast.makeText(context, "No Bluetooth !!", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(context, "No bluetooth_colour !!", Toast.LENGTH_LONG);
             toast.show();
             // if no bluetooth device on this tablet don’t go any further.
             return;
@@ -164,7 +164,7 @@ public class BluetoothAttempt extends Fragment {
 
                 switch(action) {
                     case BluetoothDevice.ACTION_FOUND: // If a new BT device found
-                        // Intent will contain discovered Bluetooth Device so go and get it
+                        // Intent will contain discovered bluetooth_colour Device so go and get it
                         newDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
                         // Add the name and address to the custom array adapter to show in a ListView
@@ -193,7 +193,7 @@ public class BluetoothAttempt extends Fragment {
         };
 
         // create 3 separate IntentFilters that are tuned to listen to certain Android broadcasts
-        // 1) when new Bluetooth devices are discovered,
+        // 1) when new bluetooth_colour devices are discovered,
         // 2) when discovery of devices starts (not essential but give useful feedback)
         // 3) When discovery ends (not essential but give useful feedback)
         IntentFilter filterFound = new IntentFilter (BluetoothDevice.ACTION_FOUND);
@@ -287,7 +287,7 @@ public class BluetoothAttempt extends Fragment {
         // universal UUID for a serial profile RFCOMM blue tooth device
         // this is just one of those “things” that you have to do and just works
         UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-        // Get a Bluetooth Socket to connect with the given BluetoothDevice
+        // Get a bluetooth_colour Socket to connect with the given BluetoothDevice
         try {
             // MY_UUID is the app's UUID string, also used by the server code
             mmSocket = device.createRfcommSocketToServiceRecord (MY_UUID);
@@ -332,7 +332,7 @@ public class BluetoothAttempt extends Fragment {
 
     //
 // This function write a line of text (in the form of an array of bytes)
-// to the Bluetooth device and then sends the string “\r\n”
+// to the bluetooth_colour device and then sends the string “\r\n”
 // (required by the bluetooth dongle)
 //
     public void WriteToBTDevice (String message) {

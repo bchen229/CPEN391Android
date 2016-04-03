@@ -295,7 +295,7 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
 
     //
 // This function write a line of text (in the form of an array of bytes)
-// to the Bluetooth device and then sends the string “\r\n”
+// to the bluetooth_colour device and then sends the string “\r\n”
 // (required by the bluetooth dongle)
 //
     public void WriteToBTDevice(String message) {

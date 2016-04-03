@@ -1,15 +1,16 @@
 package com.example.brian.thebluetooth;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.Toast;
 
-/**
- * Created by Brian on 2016-03-23.
- */
 public class HomeFragment extends Fragment {
 
     @Override
@@ -20,6 +21,38 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.content_main, container, false);
+
+        GridView gView = (GridView)inflater.inflate(R.layout.content_main, container, false);
+        gView.setAdapter(new ImageAdapter(getActivity()));
+
+        // set the listeners for the images
+        gView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                Fragment fragment = new HomeFragment();
+
+                switch(position) {
+                    case 1:
+                        fragment = new BluetoothAttempt();
+                        break;
+                    case 2:
+                        fragment = new MapActivity();
+                        break;
+                    case 3:
+                        fragment = new Messaging();
+                        break;
+                    default:
+                        break;
+                }
+
+                // Insert the fragment by replacing any existing fragment
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame, fragment)
+                        .commit();
+            }
+        });
+
+        return gView;
     }
 }
