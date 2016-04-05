@@ -32,7 +32,7 @@ public class Messaging extends Fragment {
     private Handler RX_HANDLER = new Handler();
     private Thread TX_THREAD;
     private Handler TX_HANDLER = new Handler();
-
+//
     LinearLayout llLayout;
     ArrayList<String> listItems = new ArrayList<>();
     ArrayAdapter<String> adapter;
