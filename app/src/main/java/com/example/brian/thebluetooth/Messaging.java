@@ -240,7 +240,7 @@ public class Messaging extends Fragment {
 
         //}
     }
-
+//
     public void updateAdapter(String message) {
         runOnUiThread(new Runnable() {
             @Override
