@@ -181,10 +181,10 @@ public class BluetoothAttempt extends Fragment {
                         myDiscoveredArrayAdapter.notifyDataSetChanged();
                         break;
                     case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
-                        Toast.makeText(context, "Discovery Started", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(context, "Discovery Started", Toast.LENGTH_LONG).show();
                         break;
                     case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
-                        Toast.makeText(context, "Discovery Finished", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(context, "Discovery Finished", Toast.LENGTH_LONG).show();
                         break;
                     default:
                         break;

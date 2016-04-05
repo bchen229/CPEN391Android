@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.transition.Slide;
+import android.util.FloatMath;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +41,8 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
     private Thread thread1;
     private Thread thread2;
     private Handler handler = new Handler();
+    private Handler handler2 = new Handler();
+
     private String TAG = "Thread Task";
     double Lat = 49.261818;
     double Lon = -123.042698;
@@ -48,6 +52,7 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
     LatLng testLatLng = new LatLng(Lat,Lon);
     int distanceFlag = 0;
     private boolean runGPS = true;
+    int popped = 0;
 
 
     @Override
@@ -64,14 +69,10 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
 
         thread1 = new Thread( new Runnable() {
             public void run() {
-                if (runGPS){
+                while (runGPS){
                     GPSHandler();
                     Log.d(TAG, "GPS Updated");
-                    try {
-                        Thread.sleep(10000);
-                    } catch(Exception e) {
-                        e.printStackTrace();
-                    }
+
                 }
             }
         });
@@ -85,11 +86,25 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
                     public void run() {
                         handler.postDelayed(this, 10000);
 
-                        if(distanceFlag == 1){
+                        double dist = distFrom(homeLat, homeLong, Lat, Lon);
+
+                        if(dist > 1000){
+
+                            distanceFlag = 1;
+
+                        }
+                        else{
+
+                            distanceFlag = 0;
+
+                        }
+
+                        if(distanceFlag == 1 && popped == 0){
                             setupWindowAnimations();
                             distanceFlag = 0;
                             startActivity(new Intent(getActivity(), Pop.class));
                             getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                            popped = 1;
                         }
                         mMap.clear();
 
@@ -225,16 +240,16 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
     private void addLines(){
 
         mMap.addPolyline((new PolylineOptions())
-                .add( homeLatLng,new LatLng(Lat, Lon)
+                .add(homeLatLng, new LatLng(Lat, Lon)
                 ).width(5).color(Color.BLUE)
                 .geodesic(true));
 
     }
 
     private void setupWindowAnimations() {
-      /*  Slide slide = new Slide();
+         Slide slide = new Slide();
         slide.setDuration(1000);
-        getActivity().getWindow().setExitTransition(slide);*/
+        getActivity().getWindow().setExitTransition(slide);
     }
 
     @Override
@@ -337,10 +352,12 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
         String Latitude;
         String Longitude;
         String send = ";send;";
+        WriteToBTDevice(command);
 
-        //Fix this once we have bluetooth
         while (!(check = ReadFromBTDevice()).equals("a")) {
             WriteToBTDevice(command);
+            Log.d("GPS HANDLER Check: ", check);
+            Log.d("GPS HANDLER: ", "Stopping here");
         }
         WriteToBTDevice(send);
 
@@ -376,5 +393,21 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
         }
 
 
+    }
+
+    /*
+    * Found here
+    * http://stackoverflow.com/questions/837872/calculate-distance-in-meters-when-you-know-longitude-and-latitude-in-java*/
+    public static float distFrom(double lat1, double lng1, double lat2, double lng2) {
+        double earthRadius = 6371000; //meters
+        double dLat = Math.toRadians(lat2-lat1);
+        double dLng = Math.toRadians(lng2-lng1);
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                        Math.sin(dLng/2) * Math.sin(dLng/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        float dist = (float) (earthRadius * c);
+
+        return dist;
     }
 }
