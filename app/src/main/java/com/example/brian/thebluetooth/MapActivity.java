@@ -391,7 +391,7 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
             Lon = (-1) * Lon;
 
         }
-
+//
 
     }
 
