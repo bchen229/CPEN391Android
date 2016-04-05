@@ -31,7 +31,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class BluetoothAttempt extends Fragment {
-
+//
     // two dynamic arrays of strings (populate at run time)
     private ArrayList<String> myPairedDevicesStringArray = new ArrayList<>();
     private ArrayList<String> myDiscoveredDevicesStringArray = new ArrayList<>();
