@@ -43,6 +43,8 @@ public class HomeFragment extends Fragment {
                     case 3:
                         fragment = new Messaging();
                         break;
+                    case 4:
+                        fragment = new GridLauncher();
                     default:
                         break;
                 }
