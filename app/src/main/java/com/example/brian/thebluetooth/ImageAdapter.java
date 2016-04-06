@@ -23,6 +23,11 @@ public class ImageAdapter extends BaseAdapter {
         mItems.add(new Item("Bluetooth", R.drawable.bluetooth_copy));
         mItems.add(new Item("Map", R.drawable.maps_icon));
         mItems.add(new Item("Messaging", R.drawable.messaging_icon));
+        mItems.add(new Item("Patient 1", R.drawable.donald_trump_square));
+        mItems.add(new Item("Patient 2", R.drawable.thatcher_square));
+        mItems.add(new Item("Patient 3", R.drawable.george_clooney_square));
+        mItems.add(new Item("Patient 4", R.drawable.jake_square));
+
     }
 
     @Override
