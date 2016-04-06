@@ -137,12 +137,10 @@ public class MainActivity extends AppCompatActivity{
 
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-//        ft.replace(R.id.content_frame, fragment)
-//        .commit();
-        ft.replace(R.id.content_frame, fragment)
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame, fragment)
                 .commit();
-        ft.setCustomAnimations(R.transition.slide_in_left, R.transition.slide_out_right);
+
 
         // Highlight the selected item, update the title, and close the drawer
         mDrawerList.setItemChecked(position, true);
