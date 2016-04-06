@@ -13,24 +13,11 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/PanoramioLayout"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
-
-    <TextView
-        android:id="@+id/place_name"
-        android:layout_width="fill_parent"
-        android:layout_height="40dip"
-        android:background="@drawable/green_gradient"
-        android:padding="7dip" />
-
     <GridView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/gridview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/place_name"
         android:layout_weight="0.9"
         android:animateLayoutChanges="true"
         android:clipChildren="true"
@@ -42,12 +29,3 @@
         android:scrollbarFadeDuration="0"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical" />
-
-    <ProgressBar
-        android:id="@+id/a_progressbar"
-        style="@android:style/Widget.ProgressBar.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
-
-</RelativeLayout>
