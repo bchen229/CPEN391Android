@@ -11,18 +11,17 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImageAdapter extends BaseAdapter {
-
+public class PatientImageAdapter extends BaseAdapter {
     private final List<Item> mItems = new ArrayList<>();
     private final LayoutInflater mInflater;
 
-    public ImageAdapter(Context c) {
+    public PatientImageAdapter(Context c) {
         mInflater = LayoutInflater.from(c);
 
-        mItems.add(new Item("Patients", R.drawable.patients_icon));
-        mItems.add(new Item("Bluetooth", R.drawable.bluetooth_copy));
-        mItems.add(new Item("Map", R.drawable.maps_icon));
-        mItems.add(new Item("Messaging", R.drawable.messaging_icon));
+        mItems.add(new Item("Patient 1", R.drawable.donald_trump_square));
+        mItems.add(new Item("Patient 2", R.drawable.thatcher_square));
+        mItems.add(new Item("Patient 3", R.drawable.george_clooney_square));
+        mItems.add(new Item("Patient 4", R.drawable.jake_square));
 
     }
 
