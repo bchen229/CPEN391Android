@@ -17,4 +17,10 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="title_activity_messaging">Messaging</string>
 
+    <string name="untitled">Untitled</string>
+    <string name="splash">
+        Welcome to Panoramio!\n\n
+        Panoramio lets you explore cool places through photographs
+    </string>
+
 </resources>

@@ -2,6 +2,7 @@ package com.example.brian.thebluetooth;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -143,6 +144,7 @@ public class MainActivity extends AppCompatActivity{
                 .replace(R.id.content_frame, fragment)
                 .commit();
 
+
         // Highlight the selected item, update the title, and close the drawer
         mDrawerList.setItemChecked(position, true);
         setTitle(buttonArray[position]);
@@ -163,5 +165,15 @@ public class MainActivity extends AppCompatActivity{
             }
         });
     }
+    public void onResume(){
+        super.onResume();
+        Fragment fragment = new HomeFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame, fragment)
+                .commit();
+    }
+
+
 }
 
