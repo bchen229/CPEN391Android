@@ -165,5 +165,15 @@ public class MainActivity extends AppCompatActivity{
             }
         });
     }
+    public void onResume(){
+        super.onResume();
+        Fragment fragment = new HomeFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame, fragment)
+                .commit();
+    }
+
+
 }
 
