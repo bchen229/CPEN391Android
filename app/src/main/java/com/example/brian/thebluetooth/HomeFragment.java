@@ -45,6 +45,10 @@ public class HomeFragment extends Fragment {
                         break;
                     case 4:
                         fragment = new GridLauncher();
+                        break;
+                    case 5:
+                        // do SQL fragment stuff
+                        break;
                     default:
                         break;
                 }

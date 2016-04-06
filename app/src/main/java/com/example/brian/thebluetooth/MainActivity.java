@@ -17,7 +17,8 @@ import android.widget.RelativeLayout;
 public class MainActivity extends AppCompatActivity{
 
     // declarations used for the navigation bar
-    String[] buttonArray = {"Home", "Patients", "Bluetooth", "Map", "Messaging", "NaviImage"};
+    String[] buttonArray = {"Home", "Patients", "Bluetooth", "Map", "Messaging",
+            "NaviImage", "Diagnosis"};
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -134,6 +135,10 @@ public class MainActivity extends AppCompatActivity{
                 break;
             case 5:
                 fragment = new GridLauncher();
+                break;
+            case 6:
+                // do the SQL stuff
+                break;
             default:
                 break;
         }
