@@ -32,7 +32,7 @@ public class HomeFragment extends Fragment {
 
                 switch(position) {
                     case 0:
-                        fragment = new GridLauncher();
+                        fragment = new PatientsFragment();
                         break;
                     case 1:
                         fragment = new BluetoothAttempt();
