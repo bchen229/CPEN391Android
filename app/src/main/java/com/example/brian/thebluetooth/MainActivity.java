@@ -18,7 +18,7 @@ import android.widget.RelativeLayout;
 public class MainActivity extends AppCompatActivity{
 
     // declarations used for the navigation bar
-    String[] buttonArray = {"Home", "Bluetooth", "Map", "Messaging"};
+    String[] buttonArray = {"Home", "Patients", "Bluetooth", "Map", "Messaging"};
     //, "Maps", "Info", "Messages"
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
@@ -123,12 +123,15 @@ public class MainActivity extends AppCompatActivity{
 
         switch(position) {
             case 1:
-                fragment = new BluetoothAttempt();
+                fragment = new PatientsFragment();
                 break;
             case 2:
-                fragment = new MapActivity();
+                fragment = new BluetoothAttempt();
                 break;
             case 3:
+                fragment = new MapActivity();
+                break;
+            case 4:
                 fragment = new Messaging();
                 break;
             default:
