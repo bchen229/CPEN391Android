@@ -2,6 +2,7 @@ package com.example.brian.thebluetooth;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -136,9 +137,12 @@ public class MainActivity extends AppCompatActivity{
 
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, fragment)
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+//        ft.replace(R.id.content_frame, fragment)
+//        .commit();
+        ft.replace(R.id.content_frame, fragment)
                 .commit();
+        ft.setCustomAnimations(R.transition.slide_in_left, R.transition.slide_out_right);
 
         // Highlight the selected item, update the title, and close the drawer
         mDrawerList.setItemChecked(position, true);
