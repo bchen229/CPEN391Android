@@ -19,10 +19,10 @@ public class ImageAdapter extends BaseAdapter {
     public ImageAdapter(Context c) {
         mInflater = LayoutInflater.from(c);
 
-        mItems.add(new Item("Home", R.drawable.home_dark));
-        mItems.add(new Item("bluetooth_colour", R.drawable.bluetooth_colour));
-        mItems.add(new Item("Map", R.drawable.map_colour));
-        mItems.add(new Item("Messaging", R.drawable.messaging_colour));
+        mItems.add(new Item("Home", R.drawable.home_button));
+        mItems.add(new Item("Bluetooth", R.drawable.bluetooth_copy));
+        mItems.add(new Item("Map", R.drawable.maps_icon));
+        mItems.add(new Item("Messaging", R.drawable.messaging_icon));
     }
 
     @Override

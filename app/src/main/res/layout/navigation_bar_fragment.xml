@@ -16,12 +16,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <!-- navigation drawer list -->
-        <ListView
-            android:id="@+id/navList"
-            android:layout_width="200dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="#ffeeeeee"/>
+            <!-- navigation drawer list -->
+            <ListView
+                android:id="@+id/navList"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:background="#ffeeeeee"
+                android:layout_below="@+id/image_view" />
+
     </android.support.v4.widget.DrawerLayout>
 </RelativeLayout>

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity{
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+    private RelativeLayout mDrawer;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     ArrayAdapter<String> mAdapter;
@@ -31,6 +33,8 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
 
         // initialize the navigation bar
+        mDrawer = (RelativeLayout) findViewById(R.id.navParent);
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.navList);
         if(mDrawerList != null) {
@@ -139,7 +143,7 @@ public class MainActivity extends AppCompatActivity{
         // Highlight the selected item, update the title, and close the drawer
         mDrawerList.setItemChecked(position, true);
         setTitle(buttonArray[position]);
-        mDrawerLayout.closeDrawer(mDrawerList);
+        mDrawerLayout.closeDrawer(mDrawer);
     }
 
     // helper function for adding items into the drawerList
