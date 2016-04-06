@@ -111,13 +111,6 @@ public class NaviImageAdapter extends BaseAdapter {
 
         ImageView i = (ImageView) view.findViewById(R.id.image);
         i.setImageBitmap(s.getBitmap());
-//        i.setBackgroundResource(R.drawable.picture_frame);
-
-        //TextView t = (TextView) view.findViewById(R.id.title);
-        // t.setText(s.getTitle());
-
-//        t = (TextView) view.findViewById(R.id.owner);
-//        t.setText(s.getOwner());
         return view;
     }
 }

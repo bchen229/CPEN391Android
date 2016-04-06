@@ -2,7 +2,6 @@ package com.example.brian.thebluetooth;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -18,8 +17,8 @@ import android.widget.RelativeLayout;
 public class MainActivity extends AppCompatActivity{
 
     // declarations used for the navigation bar
-    String[] buttonArray = {"Home", "Patients", "Bluetooth", "Map", "Messaging"};
-    //, "Maps", "Info", "Messages"
+    String[] buttonArray = {"Home", "Patients", "Bluetooth", "Map", "Messaging",
+            "NaviImage", "Diagnosis"};
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -133,6 +132,12 @@ public class MainActivity extends AppCompatActivity{
                 break;
             case 4:
                 fragment = new Messaging();
+                break;
+            case 5:
+                fragment = new GridLauncher();
+                break;
+            case 6:
+                // do the SQL stuff
                 break;
             default:
                 break;

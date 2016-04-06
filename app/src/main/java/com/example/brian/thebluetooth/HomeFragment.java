@@ -32,7 +32,7 @@ public class HomeFragment extends Fragment {
 
                 switch(position) {
                     case 0:
-                        fragment = new GridLauncher();
+                        fragment = new PatientsFragment();
                         break;
                     case 1:
                         fragment = new BluetoothAttempt();
@@ -42,6 +42,12 @@ public class HomeFragment extends Fragment {
                         break;
                     case 3:
                         fragment = new Messaging();
+                        break;
+                    case 4:
+                        fragment = new GridLauncher();
+                        break;
+                    case 5:
+                        // do SQL fragment stuff
                         break;
                     default:
                         break;
