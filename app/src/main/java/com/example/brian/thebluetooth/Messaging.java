@@ -7,12 +7,14 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.os.SystemClock;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +29,7 @@ import java.util.Collections;
 import static com.google.android.gms.internal.zzir.runOnUiThread;
 
 public class Messaging extends Fragment {
+    Parcelable state;
     EditText msg;
     Button send;
     private Thread RX_THREAD;
@@ -56,10 +59,12 @@ public class Messaging extends Fragment {
                 Collections.addAll(listItems, values);
             }
         }
+
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, listItems);
 
         ListView chat = (ListView) llLayout.findViewById(R.id.listView);
         chat.setAdapter(adapter);
+
 
         RX_THREAD = new Thread() {
             public void run() {
@@ -73,7 +78,7 @@ public class Messaging extends Fragment {
                             updateAdapter(messageRX);
                         }
                     });
-                    RX_HANDLER.postDelayed(this,2000);
+                    RX_HANDLER.postDelayed(this,500);
                 }
             }
         };
@@ -86,7 +91,7 @@ public class Messaging extends Fragment {
                 finishedTX = false;
                 try {
                     WriteToBTDevice(";RCV;");
-                } catch(NullPointerException npe) {
+                } catch (NullPointerException npe) {
                     listItems.add("No Bluetooth Conection");
                     adapter.notifyDataSetChanged();
                     return;
@@ -113,6 +118,8 @@ public class Messaging extends Fragment {
         Log.v("LOL", "onPause");
         runRX = false;
         runTX = false;
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
         RX_THREAD.interrupt();
         //TX_THREAD.interrupt();
         super.onPause();
@@ -209,9 +216,9 @@ public class Messaging extends Fragment {
             @Override
             public void run() {
 
-                if( !(messageRX == null)) {
+                if (!(messageRX == null)) {
 
-                    if(!messageRX.isEmpty()) {
+                    if (!messageRX.isEmpty()) {
 
                         Log.d("Listener Log", messageRX);
 
@@ -219,9 +226,20 @@ public class Messaging extends Fragment {
                         // next thing you have to do is check if your adapter has changed
                         adapter.notifyDataSetChanged();
                         messageRX = "";
+
+                        NotificationManager myNotificationManager = (NotificationManager) getActivity()
+                                .getSystemService(Context.NOTIFICATION_SERVICE);
+                        NotificationCompat.Builder builder =
+                                new NotificationCompat.Builder(getActivity());
+                        builder.setSmallIcon(R.drawable.icon);
+                        Notification notification = builder.build();
+                        notification.sound = Uri.parse("android.resource://"
+                                + getActivity().getPackageName() + "/" + R.raw.msn);
+                        myNotificationManager.notify(0, notification);
                     }
                 }
             }
         });
     }
+
 }
