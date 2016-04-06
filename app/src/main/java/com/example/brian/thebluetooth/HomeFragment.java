@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 public class HomeFragment extends Fragment {
 
@@ -32,6 +31,9 @@ public class HomeFragment extends Fragment {
                 Fragment fragment = new HomeFragment();
 
                 switch(position) {
+                    case 0:
+                        fragment = new NaviImage();
+                        break;
                     case 1:
                         fragment = new BluetoothAttempt();
                         break;
