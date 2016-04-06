@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,7 +42,6 @@ public class Messaging extends Fragment {
     String messageRX;
 
     boolean finishedTX = true;
-    boolean finishedRX = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,7 +66,6 @@ public class Messaging extends Fragment {
                 if (runRX && finishedTX) {
                     RXHandler();
 
-                    // Listener();
                     runOnUiThread(new Runnable() {
 
                         @Override
@@ -80,30 +79,18 @@ public class Messaging extends Fragment {
         };
         RX_THREAD.start();
 
-        /*TX_THREAD = new Thread() {
-            public void run() {
-                if (runTX) {
-                   try {
-                        Thread.sleep(7000);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    //TX_HANDLER.postDelayed(this, 5000);
-
-                    Listener();
-                }
-            }
-        };
-        TX_THREAD.start();
-*/
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 finishedTX = false;
-
-                WriteToBTDevice(";RCV;");
-
+                try {
+                    WriteToBTDevice(";RCV;");
+                } catch(NullPointerException npe) {
+                    listItems.add("No Bluetooth Conection");
+                    adapter.notifyDataSetChanged();
+                    return;
+                }
                 //   if((ReadFromBTDevice()).equals("y")) {
                 Log.d("ABC", "123");
                 WriteToBTDevice(";" + msg.getText().toString() + ";");
@@ -143,15 +130,20 @@ public class Messaging extends Fragment {
         savedState.putStringArray("messageStrings", values);
     }
 
-    public void WriteToBTDevice(String message) {
+    public void WriteToBTDevice(String message) throws NullPointerException{
         String s = "\r\n";
         byte[] msgBuffer = message.getBytes();
         byte[] newline = s.getBytes();
+
+        if(BluetoothAttempt.mmOutStream == null) {
+            throw new NullPointerException("No Bluetooth Output Stream");
+        }
 
         try {
             BluetoothAttempt.mmOutStream.write(msgBuffer);
             BluetoothAttempt.mmOutStream.write(newline);
         } catch (IOException e) {
+
         }
     }
 
@@ -182,9 +174,11 @@ public class Messaging extends Fragment {
         String check;
         String message;
         String command = ";MSG;";
-
-        WriteToBTDevice(command);
-
+        try {
+            WriteToBTDevice(command);
+        } catch(NullPointerException npe) {
+            return;
+        }
 /*        while (!(check = ReadFromBTDevice()).equals("y")) {
             WriteToBTDevice(command);
             Log.d("MSG Check: ", check);
@@ -210,37 +204,6 @@ public class Messaging extends Fragment {
         }
     }
 
-    private void Listener() {
-
-        String check;
-
-
-        while (!(check = ReadFromBTDevice()).equals("m"));
-        Log.d("Listener Log", check);
-
-
-        //if (check.equals("msg")) {
-
-        WriteToBTDevice(";send;");
-
-        messageRX = "Patient: " + ReadFromBTDevice();
-
-        updateAdapter(messageRX);
-/*
-
-            NotificationManager myNotificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-
-            NotificationCompat.Builder builder =
-                    new NotificationCompat.Builder(getActivity());
-            Notification notification = builder.build();
-            notification.sound = Uri.parse("android.resource://"
-                    + getActivity().getPackageName() + "/" + R.raw.msn);*/
-
-        // myNotificationManager.notify(0, notification);
-
-        //}
-    }
-//
     public void updateAdapter(String message) {
         runOnUiThread(new Runnable() {
             @Override
