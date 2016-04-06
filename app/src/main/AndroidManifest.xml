@@ -75,6 +75,12 @@
             android:theme="@android:style/Theme.NoTitleBar">
         </activity>
 
+        <!--<activity-->
+            <!--android:name=".PatientPage"-->
+            <!--android:label="Patients"-->
+            <!--android:theme="@android:style/Theme.NoTitleBar">-->
+        <!--</activity>-->
+
     </application>
 
 </manifest>
