@@ -1,6 +1,9 @@
 package com.example.brian.thebluetooth;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.content.Intent;
 import android.util.Log;
@@ -17,7 +20,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-public class NaviImage extends Fragment {
+public class NaviImage extends Activity {
 
     private static final String DEFAULT_QUERY = "San Francisco";
     ImageManager mImageManager;
@@ -25,13 +28,17 @@ public class NaviImage extends Fragment {
     private String query;
     private TextView textView;
     private ProgressBar progressBar;
+    private Context mContext;
+    private GridView gridView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mContext = this;
 
-        mImageManager = ImageManager.getInstance(getActivity());
+        mImageManager = ImageManager.getInstance(mContext);
         try {
-            handleIntent(getActivity().getIntent());
+            handleIntent(getIntent());
         } catch (final IOException e) {
             e.printStackTrace();
         } catch (final URISyntaxException e) {
@@ -40,20 +47,29 @@ public class NaviImage extends Fragment {
             e.printStackTrace();
         }
 
-        // intiialize the gridview
-        GridView gridView = (GridView) inflater.inflate(R.layout.image_grid, container, false);
-        final ImageAdapter imageAdapter = new ImageAdapter(getActivity());
+
+        initGridView();
+    }
+
+    private void initGridView() {
+        setContentView(R.layout.image_grid);
+        gridView = (GridView) findViewById(R.id.photoview);
+        final NaviImageAdapter imageAdapter = new NaviImageAdapter(mContext);
         gridView.setAdapter(imageAdapter);
+        progressBar = (ProgressBar) findViewById(R.id.a_progressbar);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 // Create an intent to show a particular item.
-                startActivity(new Intent(getActivity(), ViewImage.class)
-                        .putExtra(ImageManager.PANORAMIO_ITEM_EXTRA,
-                                mImageManager.get(position)));
+                final Intent i = new Intent(NaviImage.this, ViewImage.class);
+                Log.d("Click", Integer.toString(mImageManager.size()));
+                Log.d("Click", mImageManager.get(position).getThumbUrl());
+                i.putExtra(ImageManager.PANORAMIO_ITEM_EXTRA, mImageManager.get(position));
+                startActivity(i);
             }
         });
         gridView.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
             public void onChildViewAdded(View parent, View child) {
+                progressBar.setVisibility(View.INVISIBLE);
                 ((ViewGroup) parent).getChildAt(0).setSelected(true);
             }
 
@@ -61,11 +77,30 @@ public class NaviImage extends Fragment {
             }
         });
 
-        return gridView;
+//        textView = (TextView) findViewById(R.id.place_name);
+//        textView.setText(query);
+//        PanoramioLeftNavService.getLeftNavBar(this);
+        gridView.requestFocus();
     }
 
     @Override
-    public void onDestroyView() {
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        progressBar.setVisibility(View.VISIBLE);
+        try {
+            handleIntent(intent);
+        } catch (final IOException e) {
+            e.printStackTrace();
+        } catch (final URISyntaxException e) {
+            e.printStackTrace();
+        } catch (final JSONException e) {
+            e.printStackTrace();
+        }
+        initGridView();
+    }
+
+    @Override
+    protected void onDestroy() {
         super.onDestroy();
         mImageManager.clear();
     }

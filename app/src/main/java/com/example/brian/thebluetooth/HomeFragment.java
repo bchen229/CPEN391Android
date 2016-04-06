@@ -32,7 +32,7 @@ public class HomeFragment extends Fragment {
 
                 switch(position) {
                     case 0:
-                        fragment = new NaviImage();
+                        fragment = new GridLauncher();
                         break;
                     case 1:
                         fragment = new BluetoothAttempt();
