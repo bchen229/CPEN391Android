@@ -1,18 +1,21 @@
 package com.example.brian.thebluetooth;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.design.widget.Snackbar;
 import android.transition.Slide;
-import android.util.FloatMath;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -41,7 +44,6 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
     private Thread thread1;
     private Thread thread2;
     private Handler handler = new Handler();
-    private Handler handler2 = new Handler();
 
     private String TAG = "Thread Task";
     double Lat = 49.261818;
@@ -49,7 +51,6 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
     double homeLat = 49.261818;
     double homeLong = -123.049698;
     LatLng homeLatLng = new LatLng(homeLat, homeLong);
-    LatLng testLatLng = new LatLng(Lat,Lon);
     int distanceFlag = 0;
     private boolean runGPS = true;
     int popped = 0;
@@ -67,12 +68,11 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
         mapView.getMapAsync(this);
         runGPS = true;
 
+
         thread1 = new Thread( new Runnable() {
             public void run() {
                 while (runGPS){
                     GPSHandler();
-                    Log.d(TAG, "GPS Updated");
-
                 }
             }
         });
@@ -214,7 +214,7 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
 
             // traversing through routes
             for (int i = 0; i < routes.size(); i++) {
-                points = new ArrayList<LatLng>();
+                points = new ArrayList<>();
                 polyLineOptions = new PolylineOptions();
                 List<HashMap<String, String>> path = routes.get(i);
 
@@ -271,8 +271,6 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
             mMap.setMyLocationEnabled(true);
         }
         catch(SecurityException E){}
-        //LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 1, this);
 
         mkr =  mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(Lat, Lon)).snippet("Name: John Doe\n Age: 68").snippet("Age: 68").snippet("123 Fake Street")
@@ -285,7 +283,7 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
         mkrHome.setPosition(new LatLng(homeLat, homeLong));
         mkrHome.showInfoWindow();
 
-        float zoomLevel = new Float(16);
+        float zoomLevel = 16;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(van, zoomLevel));
 
     }
@@ -313,10 +311,14 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
 // to the bluetooth_colour device and then sends the string “\r\n”
 // (required by the bluetooth dongle)
 //
-    public void WriteToBTDevice(String message) {
+    public void WriteToBTDevice(String message) throws NullPointerException{
         String s = "\r\n";
         byte[] msgBuffer = message.getBytes();
         byte[] newline = s.getBytes();
+
+        if(BluetoothAttempt.mmOutStream == null) {
+            throw new NullPointerException("No Bluetooth Output Stream");
+        }
 
         try {
             BluetoothAttempt.mmOutStream.write(msgBuffer);
@@ -352,7 +354,12 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
         String Latitude;
         String Longitude;
         String send = ";send;";
-        WriteToBTDevice(command);
+
+        try {
+            WriteToBTDevice(command);
+        } catch (NullPointerException npe) {
+            return;
+        }
 
         while (!(check = ReadFromBTDevice()).equals("a")) {
             WriteToBTDevice(command);
