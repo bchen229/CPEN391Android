@@ -65,6 +65,7 @@ public class PatientPage extends Fragment implements View.OnClickListener {
 
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
+                        .addToBackStack(null)
                         .replace(R.id.content_frame, fragment)
                         .commit();
                 break;
