@@ -12,7 +12,6 @@ public class GridLauncher extends Fragment {
         View v = inflater.inflate(R.layout.dummyview, container, false);
         Intent i = new Intent(getActivity(), NaviImage.class);
 
-        //TODO need to add a try catch in case the bundle doesn't exist (or add a default bundle)
         Bundle bun = this.getArguments();
         float lon = bun.getFloat("Longitude", (float) -123.2);
         float lat = bun.getFloat("Latitude", (float) 49.26);
