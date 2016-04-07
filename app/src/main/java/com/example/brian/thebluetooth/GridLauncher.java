@@ -10,7 +10,20 @@ import android.view.ViewGroup;
 public class GridLauncher extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.dummyview, container, false);
-        getActivity().startActivity(new Intent(getActivity(), NaviImage.class));
+        Intent i = new Intent(getActivity(), NaviImage.class);
+
+        //TODO need to add a try catch in case the bundle doesn't exist (or add a default bundle)
+        Bundle bun = this.getArguments();
+        float lon = bun.getFloat("Longitude", (float) -123.2);
+        float lat = bun.getFloat("Latitude", (float) 49.26);
+
+//        i.putExtra("Longitude", (float) -123.2);
+//        i.putExtra("Latitude", (float) 49.26);
+
+        i.putExtra("Longitude", lon);
+        i.putExtra("Latitude", lat);
+
+        getActivity().startActivity(i);
 //        getActivity().startActivity(new Intent(getActivity(), Pop.class));
 
         return v;

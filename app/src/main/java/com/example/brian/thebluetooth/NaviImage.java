@@ -106,6 +106,21 @@ public class NaviImage extends Activity {
     }
 
     private void handleIntent(Intent intent) throws IOException, URISyntaxException, JSONException {
-        mImageManager.load((float) -123.250812, (float) -123.247403, (float) 49.260998, (float) 49.263114);
+        float eps_lon = (float) 5e-2;
+        float eps_lat = (float) 1e-3;
+
+        float lon = intent.getFloatExtra("Longitude",(float) -123.2);
+        float lat = intent.getFloatExtra("Latitude", (float)  49.26);
+        Log.d("HandleIntent_test",Float.toString(lon));
+        Log.d("HandleIntent_test",Float.toString(lat));
+        Log.d("HandleIntent_test","minlon " + Float.toString(lon - eps_lon));
+        Log.d("HandleIntent_test","maxlon " + Float.toString(lon + eps_lon));
+        Log.d("HandleIntent_test","minlat " + Float.toString(lat - eps_lon));
+        Log.d("HandleIntent_test","maxlat " + Float.toString(lat + eps_lon));
+
+
+//        mImageManager.load((float) -123.250812, (float) -123.247403, (float) 49.260998, (float) 49.263114);
+//        mImageManager.load((float) -123.2005, (float) -123.19949, (float) 49.2595, (float) 49.260498);
+        mImageManager.load(lon - eps_lon, lon + eps_lon, lat - eps_lat, lat + eps_lat);
     }
 }

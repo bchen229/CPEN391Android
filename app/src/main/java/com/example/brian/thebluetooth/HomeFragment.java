@@ -58,9 +58,9 @@ public class HomeFragment extends Fragment {
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .addToBackStack(null)
                         .remove(HomeFragment.this)
-                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right,
-                                R.animator.slide_in_left, R.animator.slide_out_right)
+                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
                         .replace(R.id.content_frame, fragment)
                         .commit();
 
