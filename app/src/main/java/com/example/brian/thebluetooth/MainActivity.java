@@ -90,6 +90,19 @@ public class MainActivity extends AppCompatActivity{
     }
 
     @Override
+
+    public void onBackPressed() {
+        FragmentManager fm = getFragmentManager();
+
+        if(fm.getBackStackEntryCount() > 1){
+            fm.popBackStack();
+        } else{
+            finish();
+        }
+    }
+
+
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
@@ -179,6 +192,7 @@ public class MainActivity extends AppCompatActivity{
         Fragment fragment = new HomeFragment();
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
+                .addToBackStack(null)
                 .replace(R.id.content_frame, fragment)
                 .commit();
     }
