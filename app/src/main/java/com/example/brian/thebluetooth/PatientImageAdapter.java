@@ -18,10 +18,10 @@ public class PatientImageAdapter extends BaseAdapter {
     public PatientImageAdapter(Context c) {
         mInflater = LayoutInflater.from(c);
 
-        mItems.add(new Item("Patient 1", R.drawable.donald_trump_square));
-        mItems.add(new Item("Patient 2", R.drawable.thatcher_square));
-        mItems.add(new Item("Patient 3", R.drawable.george_clooney_square));
-        mItems.add(new Item("Patient 4", R.drawable.jake_square));
+        mItems.add(new Item("Donald Trump", R.drawable.donald_trump_square));
+        mItems.add(new Item("Margaret Thatcher", R.drawable.thatcher_square));
+        mItems.add(new Item("George Clooney", R.drawable.george_clooney_square));
+        mItems.add(new Item("Jake Gyllenhaal", R.drawable.jake_square));
 
     }
 

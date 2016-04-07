@@ -35,7 +35,7 @@
             <ImageView android:id="@+id/image_view"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:background="@drawable/ic_launcher_web"
+                android:background="@drawable/ic_launcher_web_opaque"
                 android:layout_alignEnd="@+id/navList" />
 
         </RelativeLayout>

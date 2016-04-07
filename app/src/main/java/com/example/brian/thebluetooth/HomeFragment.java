@@ -1,6 +1,7 @@
 package com.example.brian.thebluetooth;
 
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
@@ -21,7 +22,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        GridView gView = (GridView)inflater.inflate(R.layout.content_main, container, false);
+        GridView gView = (GridView) inflater.inflate(R.layout.content_main, container, false);
         gView.setAdapter(new ImageAdapter(getActivity()));
 
         // set the listeners for the images
@@ -30,7 +31,7 @@ public class HomeFragment extends Fragment {
                                     int position, long id) {
                 Fragment fragment = new HomeFragment();
 
-                switch(position) {
+                switch (position) {
                     case 0:
                         fragment = new PatientsFragment();
                         break;
@@ -47,7 +48,7 @@ public class HomeFragment extends Fragment {
                         fragment = new GridLauncher();
                         break;
                     case 5:
-                        // do SQL fragment stuff
+                        fragment = new SQLLauncher();
                         break;
                     default:
                         break;
@@ -56,11 +57,18 @@ public class HomeFragment extends Fragment {
                 // Insert the fragment by replacing any existing fragment
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .addToBackStack(null)
+                        .remove(HomeFragment.this)
+                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
                         .replace(R.id.content_frame, fragment)
                         .commit();
+
             }
         });
 
         return gView;
     }
+
+
 }

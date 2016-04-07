@@ -232,18 +232,12 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
                 polyLineOptions.width(5);
                 polyLineOptions.color(Color.BLUE);
             }
+            try {
+                mMap.addPolyline(polyLineOptions);
+            } catch(NullPointerException npe) {
 
-            mMap.addPolyline(polyLineOptions);
+            }
         }
-    }
-
-    private void addLines(){
-
-        mMap.addPolyline((new PolylineOptions())
-                .add(homeLatLng, new LatLng(Lat, Lon)
-                ).width(5).color(Color.BLUE)
-                .geodesic(true));
-
     }
 
     private void setupWindowAnimations() {

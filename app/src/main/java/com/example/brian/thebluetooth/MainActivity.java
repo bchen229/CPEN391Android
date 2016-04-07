@@ -2,6 +2,7 @@ package com.example.brian.thebluetooth;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -89,6 +90,19 @@ public class MainActivity extends AppCompatActivity{
     }
 
     @Override
+
+    public void onBackPressed() {
+        FragmentManager fm = getFragmentManager();
+
+        if(fm.getBackStackEntryCount() > 1){
+            fm.popBackStack();
+        } else{
+            finish();
+        }
+    }
+
+
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
@@ -137,23 +151,27 @@ public class MainActivity extends AppCompatActivity{
                 fragment = new GridLauncher();
                 break;
             case 6:
-                // do the SQL stuff
+                fragment = new SQLLauncher();
                 break;
             default:
                 break;
         }
-
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, fragment)
-                .commit();
 
 
         // Highlight the selected item, update the title, and close the drawer
         mDrawerList.setItemChecked(position, true);
         setTitle(buttonArray[position]);
         mDrawerLayout.closeDrawer(mDrawer);
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                //.setCustomAnimations(R.transition.slide_in_left, R.transition.slide_out_right, R.transition.slide_in_left, R.transition.slide_out_right)
+                .replace(R.id.content_frame, fragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .addToBackStack(null)
+                .commit();
+
     }
 
     // helper function for adding items into the drawerList
@@ -164,8 +182,7 @@ public class MainActivity extends AppCompatActivity{
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             // add listeners to each item on the list
-            public void onItemClick(AdapterView parent, View view, int position, long id)
-            {
+            public void onItemClick(AdapterView parent, View view, int position, long id) {
                 selectItem(position);
             }
         });
@@ -175,6 +192,7 @@ public class MainActivity extends AppCompatActivity{
         Fragment fragment = new HomeFragment();
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
+                .addToBackStack(null)
                 .replace(R.id.content_frame, fragment)
                 .commit();
     }
