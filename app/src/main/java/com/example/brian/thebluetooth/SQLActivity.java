@@ -28,14 +28,14 @@ public class SQLActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sql);
         myDb = new DatabaseHelper(this);//going to call the constructor
 
-        editName = (EditText)findViewById(R.id.editText);
-        editPhone = (EditText)findViewById(R.id.editText2);
-        editPlace = (EditText)findViewById(R.id.editText3);
-        editId =(EditText)findViewById(R.id.editText4);
-        btnAddData = (Button)findViewById(R.id.button);
-        btnGetData = (Button)findViewById(R.id.button2);
-        btnUpdate = (Button)findViewById(R.id.button3);
-        btnDelete = (Button)findViewById(R.id.button4);
+        editName = (EditText)findViewById(R.id.nameEditText);
+        editPhone = (EditText)findViewById(R.id.phoneEditText);
+        editPlace = (EditText)findViewById(R.id.placeEditText);
+        editId =(EditText)findViewById(R.id.idEditText);
+        btnAddData = (Button)findViewById(R.id.addButton);
+        btnGetData = (Button)findViewById(R.id.diagnosisButton);
+        btnUpdate = (Button)findViewById(R.id.updateButton);
+        btnDelete = (Button)findViewById(R.id.deleteButton);
         AddData();
         viewAll();
         updateDate();
