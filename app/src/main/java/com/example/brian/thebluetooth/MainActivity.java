@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity{
                 fragment = new GridLauncher();
                 break;
             case 6:
-                fragment = new sqlLauncher();
+                fragment = new SQLLauncher();
                 break;
             default:
                 break;

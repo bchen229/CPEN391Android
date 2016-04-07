@@ -2,7 +2,6 @@ package com.example.brian.thebluetooth;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
@@ -49,7 +48,7 @@ public class HomeFragment extends Fragment {
                         fragment = new GridLauncher();
                         break;
                     case 5:
-                        fragment = new sqlLauncher();
+                        fragment = new SQLLauncher();
                         break;
                     default:
                         break;
@@ -60,7 +59,8 @@ public class HomeFragment extends Fragment {
                 fragmentManager.beginTransaction()
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .remove(HomeFragment.this)
-                        .setCustomAnimations(R.transition.slide_in_left, R.transition.slide_out_right, R.transition.slide_in_left, R.transition.slide_out_right)
+                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right,
+                                R.animator.slide_in_left, R.animator.slide_out_right)
                         .replace(R.id.content_frame, fragment)
                         .commit();
 
