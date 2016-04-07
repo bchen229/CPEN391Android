@@ -1,13 +1,9 @@
 package com.example.brian.thebluetooth;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class sqlActivity extends AppCompatActivity {
+public class SQLActivity extends AppCompatActivity {
 
     DatabaseHelper myDb;
     EditText editName,editPhone,editPlace,editId;
@@ -24,7 +20,6 @@ public class sqlActivity extends AppCompatActivity {
     Button btnGetData;
     Button btnUpdate;
     Button btnDelete;
-    Button btnSecondPage;
 
     private static final String TAG = MainActivity.class.getSimpleName();
     @Override
@@ -58,18 +53,15 @@ public class sqlActivity extends AppCompatActivity {
                         int delete = myDb.deleteData(editId.getText().toString());
 
                         if ( delete > 0 ){
-                            Toast.makeText(sqlActivity.this, "Data delete", Toast.LENGTH_LONG).show();
+                            Toast.makeText(SQLActivity.this, "Data delete", Toast.LENGTH_LONG).show();
                             editId.getText().clear();
 
                         }
                         else
-                            Toast.makeText(sqlActivity.this,"Deletion Failed",Toast.LENGTH_LONG).show();
+                            Toast.makeText(SQLActivity.this,"Deletion Failed",Toast.LENGTH_LONG).show();
                     }
                 }
         );
-
-
-
     }
 
 
@@ -83,15 +75,15 @@ public class sqlActivity extends AppCompatActivity {
                                 editPhone.getText().toString(), editPlace.getText().toString());
 
 
-                        if ( update== true ){
-                            Toast.makeText(sqlActivity.this,"Data Updated", Toast.LENGTH_LONG).show();
+                        if (update){
+                            Toast.makeText(SQLActivity.this,"Data Updated", Toast.LENGTH_LONG).show();
                             editId.getText().clear();
                             editName.getText().clear();
                             editPhone.getText().clear();
                             editPlace.getText().clear();
                         }
                         else
-                            Toast.makeText(sqlActivity.this,"Data did not get updated",Toast.LENGTH_LONG).show();
+                            Toast.makeText(SQLActivity.this,"Data did not get updated",Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -109,15 +101,15 @@ public class sqlActivity extends AppCompatActivity {
                         boolean isInserted= myDb.insertData(editName.getText().toString(),
                                 editPhone.getText().toString(),
                                 editPlace.getText().toString());
-                        if(isInserted == true) {
-                            Toast.makeText(sqlActivity.this, "Data Inserted", Toast.LENGTH_LONG).show();
+                        if(isInserted) {
+                            Toast.makeText(SQLActivity.this, "Data Inserted", Toast.LENGTH_LONG).show();
                             editName.getText().clear();
                             editPhone.getText().clear();
                             editPlace.getText().clear();
                         }
 
                         else
-                            Toast.makeText(sqlActivity.this,"Data Insertion Failed",Toast.LENGTH_LONG).show();
+                            Toast.makeText(SQLActivity.this,"Data Insertion Failed",Toast.LENGTH_LONG).show();
 
                     }
                 }
@@ -180,26 +172,5 @@ public class sqlActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    public void slideTransition(View view){
-
-        startActivity(new Intent(sqlActivity.this, TableActivity.class));
-        overridePendingTransition(R.transition.activity_open_translate,R.transition.activity_close_scale);
-
-
-    }
-
-    public void pushTransition(View view){
-
-        startActivity(new Intent(sqlActivity.this, TableActivity.class));
-
-        overridePendingTransition(R.transition.activity_push_up_in, R.transition.activity_push_up_out);
-
-
-
-    }
-
-
-
 
 }
