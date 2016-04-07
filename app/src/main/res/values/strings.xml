@@ -26,4 +26,11 @@
     <string name="title_activity_database_helper">DatabaseHelper</string>
     <string name="title_activity_table">TableActivity</string>
 
+    <string name="nameTag">Name:</string>
+    <string name="phoneTag">Phone:</string>
+    <string name="placeTag">Place:</string>
+    <string name="IDTag">ID:</string>
+    <string name="IDHint">Profile ID Number</string>
+    <string name="addressBook">Address Book</string>
+
 </resources>

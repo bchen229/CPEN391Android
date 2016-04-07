@@ -23,10 +23,12 @@ public class PatientsFragment extends Fragment {
         gView.setAdapter(new PatientImageAdapter(getActivity()));
 
         // set the listeners for the images
-//        gView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            public void onItemClick(AdapterView<?> parent, View v,
-//                                    int position, long id) {
-//        });
+        gView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+
+            }
+        });
 
         return gView;
     }
