@@ -53,12 +53,12 @@ public class SQLActivity extends AppCompatActivity {
                         int delete = myDb.deleteData(editId.getText().toString());
 
                         if ( delete > 0 ){
-                            Toast.makeText(SQLActivity.this, "Data delete", Toast.LENGTH_LONG).show();
+                            Toast.makeText(SQLActivity.this, "Data delete", Toast.LENGTH_SHORT).show();
                             editId.getText().clear();
 
                         }
                         else
-                            Toast.makeText(SQLActivity.this,"Deletion Failed",Toast.LENGTH_LONG).show();
+                            Toast.makeText(SQLActivity.this,"Deletion Failed",Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -76,14 +76,14 @@ public class SQLActivity extends AppCompatActivity {
 
 
                         if (update){
-                            Toast.makeText(SQLActivity.this,"Data Updated", Toast.LENGTH_LONG).show();
+                            Toast.makeText(SQLActivity.this,"Data Updated", Toast.LENGTH_SHORT).show();
                             editId.getText().clear();
                             editName.getText().clear();
                             editPhone.getText().clear();
                             editPlace.getText().clear();
                         }
                         else
-                            Toast.makeText(SQLActivity.this,"Data did not get updated",Toast.LENGTH_LONG).show();
+                            Toast.makeText(SQLActivity.this,"Data did not get updated",Toast.LENGTH_SHORT).show();
                     }
                 }
 

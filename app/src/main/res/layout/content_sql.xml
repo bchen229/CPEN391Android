@@ -28,7 +28,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/nameEditText"
             android:background="@drawable/eddittext_style"
-            android:inputType="number"
             android:layout_weight=".5" />
     </LinearLayout>
 
@@ -109,6 +108,7 @@
             android:layout_height="match_parent"
             android:id="@+id/idEditText"
             android:hint="@string/IDHint"
+            android:inputType="number"
             android:layout_weight=".5"/>
 
     </LinearLayout>

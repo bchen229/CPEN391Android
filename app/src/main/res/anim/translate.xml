@@ -8,7 +8,7 @@
         android:toXDelta="0%"
         android:fromYDelta="200%"
         android:toYDelta="0%"
-        android:duration="600"
+        android:duration="500"
         android:zAdjustment="top" />
 
 </set>

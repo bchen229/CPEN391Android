@@ -46,8 +46,8 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
     private Handler handler = new Handler();
 
     private String TAG = "Thread Task";
-    double Lat = 49.261818;
-    double Lon = -123.042698;
+    static double Lat = 49.261818;
+    static double Lon = -123.042698;
     double homeLat = 49.261818;
     double homeLong = -123.049698;
     LatLng homeLatLng = new LatLng(homeLat, homeLong);
