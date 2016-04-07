@@ -45,11 +45,17 @@ public class HomeFragment extends Fragment {
                         fragment = new Messaging();
                         break;
                     case 4:
-                        fragment = new GridLauncher();
-
+                        /*
+                        * Add a 'default' bundle with coords near UBC
+                        * to prevent NullPointerException when launching from
+                        * this fragment
+                        *
+                        * Default DD (around MacLeod): 49.261704, -123.249752
+                        * */
                         Bundle bun = new Bundle();
-                        bun.putFloat("Longitude",(float) -123.2);
-                        bun.putFloat("Latitude", (float) 49.26);
+                        bun.putFloat("Longitude",(float) -123.249752);
+                        bun.putFloat("Latitude", (float) 49.261704);
+                        fragment = new GridLauncher();
                         fragment.setArguments(bun);
                         break;
                     case 5:
