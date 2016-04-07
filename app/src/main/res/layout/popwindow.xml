@@ -12,22 +12,20 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dismiss"
-        android:id="@+id/button3"
-        android:layout_marginBottom="56dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+    <FrameLayout
+        android:id="@+id/flFragmentPlaceHolder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Messaging"
-        android:id="@+id/button4"
-        android:layout_above="@+id/button3"
-        android:layout_centerHorizontal="true" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Messaging"
+            android:id="@+id/button4"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal|bottom" />
+    </FrameLayout>
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -37,4 +35,5 @@
         android:id="@+id/textView7"
         android:layout_above="@+id/textView6"
         android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

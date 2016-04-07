@@ -46,8 +46,9 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
     private Handler handler = new Handler();
 
     private String TAG = "Thread Task";
+    private double distanceFence = 5; //circle distance in metres
     static double Lat = 49.261818;
-    static double Lon = -123.042698;
+    static double Lon = -123.049464;
     double homeLat = 49.261818;
     double homeLong = -123.049698;
     LatLng homeLatLng = new LatLng(homeLat, homeLong);
@@ -88,7 +89,7 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
 
                         double dist = distFrom(homeLat, homeLong, Lat, Lon);
 
-                        if(dist > 1000){
+                        if(dist > distanceFence){
 
                             distanceFlag = 1;
 
@@ -256,7 +257,7 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
         LatLng van = new LatLng(Lat, Lon);
 
         // Instantiates a new CircleOptions object and defines the center and radius
-        CircleOptions circleOptions = new CircleOptions().center(new LatLng(homeLat, homeLong)).radius(300); // In meters
+        CircleOptions circleOptions = new CircleOptions().center(new LatLng(homeLat, homeLong)).radius(distanceFence); // In meters
         circleOptions.strokeWidth(5);
         circleOptions.fillColor(Color.argb(20, 50, 0, 255));
         // Get back the mutable Circle
@@ -279,7 +280,7 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
         mkrHome.showInfoWindow();
 
         float zoomLevel = 16;
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(van, zoomLevel));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(homeLat, homeLong), zoomLevel));
 
     }
 

@@ -67,7 +67,7 @@ public class BluetoothAttempt extends Fragment {
             // get the details of the device name etc.
             String text = "Discovered Device: " +
                     myDiscoveredDevicesStringArray.get ( position );
-            Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
 
             // we are going to connect to the other device as a client
             // if we are already connected to a device, close connections
@@ -116,7 +116,7 @@ public class BluetoothAttempt extends Fragment {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         // check to see if your android device even has a bluetooth device !!!!,
         if (mBluetoothAdapter == null) {
-            Toast toast = Toast.makeText(context, "No bluetooth_colour !!", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(context, "No bluetooth_colour !!", Toast.LENGTH_SHORT);
             toast.show();
             // if no bluetooth device on this tablet don’t go any further.
             return;
@@ -171,7 +171,7 @@ public class BluetoothAttempt extends Fragment {
                         String theDevice = newDevice.getName() +
                                 "\nMAC Address = " + newDevice.getAddress();
 
-                        Toast.makeText(context, theDevice, Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, theDevice, Toast.LENGTH_SHORT).show();
 
                         //add the new device and string details to the two arrays (page 15)
                         Discovereddevices.add(newDevice);
@@ -293,7 +293,7 @@ public class BluetoothAttempt extends Fragment {
             mmSocket = device.createRfcommSocketToServiceRecord (MY_UUID);
         }
         catch (IOException e) {
-            Toast.makeText(context, "Socket Creation Failed", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Socket Creation Failed", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -303,10 +303,10 @@ public class BluetoothAttempt extends Fragment {
         try {
             // Attempt connection to the device through the socket.
             mmSocket.connect();
-            Toast.makeText(context, "Connection Made", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Connection Made", Toast.LENGTH_SHORT).show();
         }
         catch (IOException connectException) {
-            Toast.makeText(context, "Connection Failed", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Connection Failed", Toast.LENGTH_SHORT).show();
             return;
         }
 

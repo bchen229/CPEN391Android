@@ -79,7 +79,7 @@ public class Messaging extends Fragment {
                             updateAdapter(messageRX);
                         }
                     });
-                    RX_HANDLER.postDelayed(this,500);
+                    RX_HANDLER.postDelayed(this,1000);
                 }
             }
         };
