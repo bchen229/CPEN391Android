@@ -54,6 +54,7 @@
             android:layout_height="match_parent"
             android:id="@+id/phoneEditText"
             android:background="@drawable/eddittext_style"
+            android:inputType="phone"
             android:layout_weight=".5"/>
 
     </LinearLayout>
