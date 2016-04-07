@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity{
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.content_frame, new HomeFragment())
+                    .addToBackStack(null)
                     .commit();
         }
     }
@@ -90,10 +91,8 @@ public class MainActivity extends AppCompatActivity{
     }
 
     @Override
-
     public void onBackPressed() {
         FragmentManager fm = getFragmentManager();
-
         if(fm.getBackStackEntryCount() > 1){
             fm.popBackStack();
         } else{
@@ -192,16 +191,11 @@ public class MainActivity extends AppCompatActivity{
             }
         });
     }
+
+    @Override
     public void onResume(){
         super.onResume();
-        Fragment fragment = new HomeFragment();
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .addToBackStack(null)
-                .replace(R.id.content_frame, fragment)
-                .commit();
+
     }
-
-
 }
 

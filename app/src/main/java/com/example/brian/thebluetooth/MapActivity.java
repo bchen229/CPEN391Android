@@ -212,6 +212,10 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
             ArrayList<LatLng> points = null;
             PolylineOptions polyLineOptions = null;
 
+            if(routes == null) {
+                return;
+            }
+
             // traversing through routes
             for (int i = 0; i < routes.size(); i++) {
                 points = new ArrayList<>();
