@@ -22,6 +22,10 @@ public class PatientImageAdapter extends BaseAdapter {
         mItems.add(new Item("Margaret Thatcher", R.drawable.thatcher_square));
         mItems.add(new Item("George Clooney", R.drawable.george_clooney_square));
         mItems.add(new Item("Jake Gyllenhaal", R.drawable.jake_square));
+        mItems.add(new Item("Audrey Hepburn", R.drawable.audrey_hepburn));
+        mItems.add(new Item("Tupac Shakur", R.drawable.tupac_shakur));
+        mItems.add(new Item("Ronald Reagan", R.drawable.ronald_reagan));
+        mItems.add(new Item("Hillary Clinton", R.drawable.hillary_clinton));
 
     }
 

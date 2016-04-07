@@ -149,6 +149,11 @@ public class MainActivity extends AppCompatActivity{
                 break;
             case 5:
                 fragment = new GridLauncher();
+
+                Bundle bun = new Bundle();
+                bun.putFloat("Longitude",(float) -123.2);
+                bun.putFloat("Latitude", (float) 49.26);
+                fragment.setArguments(bun);
                 break;
             case 6:
                 fragment = new SQLLauncher();

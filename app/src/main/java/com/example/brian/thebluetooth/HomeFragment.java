@@ -46,6 +46,11 @@ public class HomeFragment extends Fragment {
                         break;
                     case 4:
                         fragment = new GridLauncher();
+
+                        Bundle bun = new Bundle();
+                        bun.putFloat("Longitude",(float) -123.2);
+                        bun.putFloat("Latitude", (float) 49.26);
+                        fragment.setArguments(bun);
                         break;
                     case 5:
                         fragment = new SQLLauncher();

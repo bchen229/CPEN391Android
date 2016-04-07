@@ -249,10 +249,7 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney, Australia, and move the camera.
         LatLng van = new LatLng(Lat, Lon);
-
 
         // Instantiates a new CircleOptions object and defines the center and radius
         CircleOptions circleOptions = new CircleOptions().center(new LatLng(homeLat, homeLong)).radius(300); // In meters
