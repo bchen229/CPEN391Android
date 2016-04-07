@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.transition.Fade;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.MapFragment;
 
@@ -36,12 +38,19 @@ public class Pop extends Activity {
             {
 
                 Fragment fragment = new Messaging();
+                ViewGroup parentView = (ViewGroup) v.getParent();
+                TextView tvPatient = (TextView) findViewById(R.id.textView6);
+                TextView tvAlert = (TextView) findViewById(R.id.textView7);
+
+                parentView.removeView(v);
+                tvPatient.setText("");
+                tvAlert.setText("");
 
                 // Insert the fragment by replacing any existing fragment
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                        //.addToBackStack(null)
+                                //.addToBackStack(null)
                         .replace(R.id.flFragmentPlaceHolder, fragment)
                         .commit();
 
