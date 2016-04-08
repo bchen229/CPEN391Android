@@ -46,15 +46,14 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
     private Handler handler = new Handler();
 
     private String TAG = "Thread Task";
-    private double distanceFence = 5; //circle distance in metres
+    private double distanceFence = 300; //circle distance in metres
     static double Lat = 49.261818;
     static double Lon = -123.049464;
     double homeLat = 49.261818;
     double homeLong = -123.049698;
-    LatLng homeLatLng = new LatLng(homeLat, homeLong);
-    int distanceFlag = 0;
+    private int distanceFlag = 0;
     private boolean runGPS = true;
-    int popped = 0;
+    private int popped = 0;
 
 
     @Override
@@ -70,10 +69,15 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
         runGPS = true;
 
 
-        thread1 = new Thread( new Runnable() {
+        thread1 = new Thread(new Runnable() {
             public void run() {
-                while (runGPS){
-                    GPSHandler();
+                while (runGPS) {
+                    Log.d("test1", "test1");
+                        GPSHandler();
+/*                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                        }*/
                 }
             }
         });
@@ -86,21 +90,21 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
                     @Override
                     public void run() {
                         handler.postDelayed(this, 10000);
+                        Log.d("test2", "test2");
 
                         double dist = distFrom(homeLat, homeLong, Lat, Lon);
 
-                        if(dist > distanceFence){
+                        if (dist > distanceFence) {
 
                             distanceFlag = 1;
 
-                        }
-                        else{
+                        } else {
 
                             distanceFlag = 0;
 
                         }
 
-                        if(distanceFlag == 1 && popped == 0){
+                        if (distanceFlag == 1 && popped == 0) {
                             setupWindowAnimations();
                             distanceFlag = 0;
                             startActivity(new Intent(getActivity(), Pop.class));
@@ -110,7 +114,7 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
                         mMap.clear();
 
                         LatLng van = new LatLng(Lat, Lon);
-                        mkr =  mMap.addMarker(new MarkerOptions()
+                        mkr = mMap.addMarker(new MarkerOptions()
                                 .position(new LatLng(Lat, Lon)).snippet("Name: John Doe\n Age: 68").snippet("Age: 68").snippet("123 Fake Street")
                                 .title("Patient Location"));
                         mkr.setPosition(new LatLng(Lat, Lon));
@@ -152,12 +156,12 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
     private String getMapsApiDirectionsUrl() {
         String waypoints = "waypoints=optimize:true|"
                 + homeLat + "," + homeLong
-                + "|" + "|" +  Lat + ","
+                + "|" + "|" + Lat + ","
                 + Lon;
-        String OriDest = "origin="+homeLat+","+homeLong+"&destination="+Lat+","+Lon;
+        String OriDest = "origin=" + homeLat + "," + homeLong + "&destination=" + Lat + "," + Lon;
 
         String sensor = "sensor=false";
-        String params = OriDest+"&%20"+waypoints + "&" + sensor;
+        String params = OriDest + "&%20" + waypoints + "&" + sensor;
         String output = "json";
         String url = "https://maps.googleapis.com/maps/api/directions/"
                 + output + "?" + params;
@@ -213,7 +217,7 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
             ArrayList<LatLng> points = null;
             PolylineOptions polyLineOptions = null;
 
-            if(routes == null) {
+            if (routes == null) {
                 return;
             }
 
@@ -239,14 +243,14 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
             }
             try {
                 mMap.addPolyline(polyLineOptions);
-            } catch(NullPointerException npe) {
+            } catch (NullPointerException npe) {
 
             }
         }
     }
 
     private void setupWindowAnimations() {
-         Slide slide = new Slide();
+        Slide slide = new Slide();
         slide.setDuration(1000);
         getActivity().getWindow().setExitTransition(slide);
     }
@@ -255,6 +259,8 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         LatLng van = new LatLng(Lat, Lon);
+        LatLng homeLatLng = new LatLng(homeLat, homeLong);
+
 
         // Instantiates a new CircleOptions object and defines the center and radius
         CircleOptions circleOptions = new CircleOptions().center(new LatLng(homeLat, homeLong)).radius(distanceFence); // In meters
@@ -263,29 +269,31 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
         // Get back the mutable Circle
         Circle circle = mMap.addCircle(circleOptions);
 
-        try{
+  /*      try {
             mMap.setMyLocationEnabled(true);
+        } catch (SecurityException E) {
         }
-        catch(SecurityException E){}
-
-        mkr =  mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(Lat, Lon)).snippet("Name: John Doe\n Age: 68").snippet("Age: 68").snippet("123 Fake Street")
+*/
+        mkr = mMap.addMarker(new MarkerOptions()
+                .position(van).snippet("Name: John Doe\n Age: 68").snippet("Age: 68").snippet("123 Fake Street")
                 .title("Patient Location"));
-        mkr.setPosition(new LatLng(Lat, Lon));
+        mkr.setPosition(van);
 
         mkrHome = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(homeLat, homeLong)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                .position(homeLatLng).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
                 .title("Home Location"));
-        mkrHome.setPosition(new LatLng(homeLat, homeLong));
+        mkrHome.setPosition(homeLatLng);
         mkrHome.showInfoWindow();
 
         float zoomLevel = 16;
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(homeLat, homeLong), zoomLevel));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(homeLatLng, zoomLevel));
 
     }
 
     @Override
     public void onResume() {
+        runGPS = true;
+        Log.d("maps tag", thread1.getState().toString());
         mapView.onResume();
         super.onResume();
     }
@@ -307,12 +315,12 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
 // to the bluetooth_colour device and then sends the string “\r\n”
 // (required by the bluetooth dongle)
 //
-    public void WriteToBTDevice(String message) throws NullPointerException{
+    public void WriteToBTDevice(String message) throws NullPointerException {
         String s = "\r\n";
         byte[] msgBuffer = message.getBytes();
         byte[] newline = s.getBytes();
 
-        if(BluetoothAttempt.mmOutStream == null) {
+        if (BluetoothAttempt.mmOutStream == null) {
             throw new NullPointerException("No Bluetooth Output Stream");
         }
 
@@ -367,7 +375,7 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
         String longLat = ReadFromBTDevice();
         String[] longLatArray = longLat.split("N");
 
-        if(longLatArray.length < 2) {
+        if (longLatArray.length < 2) {
             return;
         }
 
@@ -403,12 +411,12 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
     * http://stackoverflow.com/questions/837872/calculate-distance-in-meters-when-you-know-longitude-and-latitude-in-java*/
     public static float distFrom(double lat1, double lng1, double lat2, double lng2) {
         double earthRadius = 6371000; //meters
-        double dLat = Math.toRadians(lat2-lat1);
-        double dLng = Math.toRadians(lng2-lng1);
-        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLng = Math.toRadians(lng2 - lng1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
                 Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                        Math.sin(dLng/2) * Math.sin(dLng/2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                        Math.sin(dLng / 2) * Math.sin(dLng / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         float dist = (float) (earthRadius * c);
 
         return dist;
