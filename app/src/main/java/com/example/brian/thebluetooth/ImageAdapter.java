@@ -24,7 +24,7 @@ public class ImageAdapter extends BaseAdapter {
         mItems.add(new Item("Map", R.drawable.maps_icon));
         mItems.add(new Item("Messaging", R.drawable.messaging_icon));
         mItems.add(new Item("NaviImage", R.drawable.nav_image_icon));
-        mItems.add(new Item("Diagnosis", R.drawable.diagnosis_icon));
+        mItems.add(new Item("Address Book", R.drawable.diagnosis_icon));
 
     }
 

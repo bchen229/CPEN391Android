@@ -25,7 +25,7 @@
 
         <EditText
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/nameEditText"
             android:background="@drawable/eddittext_style"
             android:layout_weight=".5" />

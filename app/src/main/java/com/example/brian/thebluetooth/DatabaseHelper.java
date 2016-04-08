@@ -13,12 +13,12 @@ import java.sql.SQLException;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     //Declare variables for database
-    public static final String DATABASE_NAME ="AddressBook.db";
-    public static final String TABLE_NAME ="Addresses";
-    public static final String COL_1 ="ID";
-    public static final String COL_2 ="NAME";
-    public static final String COL_3 ="PHONE";
-    public static final String COL_4 ="PLACE";
+    public static final String DATABASE_NAME ="AddressBook2.db";
+    public static final String TABLE_NAME ="Addresses2";
+    public static final String COL_id ="_id";
+    public static final String COL_Name ="Name";
+    public static final String COL_Phone ="Phone";
+    public static final String COL_Place ="Place";
     private Context ourcontext;
     private DatabaseHelper dbhelper;
     private SQLiteDatabase db;
@@ -32,8 +32,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(
-                "create table addresses " +
-                        "(id integer primary key, name text,phone text,place text)"
+                "create table addresses2 " +
+                        "(_id integer primary key, Name text,Phone text,Place text)"
         );
     }
 
@@ -41,10 +41,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //going to create the database and table
         db = this.getWritableDatabase();
         ContentValues contentValue = new ContentValues();
-        contentValue.put(COL_2,name);
-        contentValue.put(COL_3,Phone);
-        contentValue.put(COL_4, place);
-        long result = db.insert("addresses",null,contentValue);
+        contentValue.put(COL_Name,name);
+        contentValue.put(COL_Phone,Phone);
+        contentValue.put(COL_Place, place);
+        long result = db.insert("addresses2",null,contentValue);
         //Now we make sure if the value are added
         if(result == -1){
             return false;
@@ -55,13 +55,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS addresses");
+        db.execSQL("DROP TABLE IF EXISTS addresses2");
         onCreate(db);
     }
     //Cursor provides random read/write access
     public Cursor getAllData(){
         db = this.getWritableDatabase();
-        Cursor result = db.rawQuery("select * from addresses",null);
+        Cursor result = db.rawQuery("select * from addresses2",null);
         return result;
 
     }
@@ -72,12 +72,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValue = new ContentValues();
 
-        contentValue.put(COL_1,id);
-        contentValue.put(COL_2,name);
-        contentValue.put(COL_3,Phone);
-        contentValue.put(COL_4, place);
+        contentValue.put(COL_id,id);
+        contentValue.put(COL_Name,name);
+        contentValue.put(COL_Phone,Phone);
+        contentValue.put(COL_Place, place);
 
-        db.update("addresses",contentValue,"ID = ?",new String[]{ id });
+        db.update("addresses2",contentValue,"ID = ?",new String[]{ id });
         return true;
 
     }
@@ -85,9 +85,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Integer deleteData(String id){
 
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete("addresses","ID = ?",new String[]{id} );
+        return db.delete("addresses2","ID = ?",new String[]{id} );
 
     }
 
+    public Cursor Getquery( String name){
+        db = this.getWritableDatabase();
+        Cursor result = db.rawQuery("Select * from addresses2 WHERE name = '"+name+"'",null);
+        return result;
+    }
 
 }

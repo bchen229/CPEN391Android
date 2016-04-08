@@ -1,6 +1,7 @@
 package com.example.brian.thebluetooth;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -122,34 +123,12 @@ public class SQLActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Cursor res = myDb.getAllData();
-                        if(res.getCount() == 0){
-                            showMessage("Error","Nothing Found");
-                            return;
-                        }
-                        StringBuffer buffer = new StringBuffer();
-                        while(res.moveToNext()){
-                            buffer.append("Id:"+ res.getString(0)+"\n");
-                            buffer.append("Name:"+ res.getString(1)+"\n");
-                            buffer.append("Phone:"+ res.getString(2)+"\n");
-                            buffer.append("Place:"+ res.getString(3)+"\n\n");
-                        }
-                        showMessage("Address Book",buffer.toString());
+                        startActivity(new Intent(SQLActivity.this, DatabaseActivity.class));
                     }
                 }
         );
 
     }
-
-    public void showMessage(String title,String message ){
-        AlertDialog.Builder build = new AlertDialog.Builder(this);
-        build.setCancelable(true);
-        build.setTitle(title);
-        build.setMessage(message);
-        build.show();
-
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

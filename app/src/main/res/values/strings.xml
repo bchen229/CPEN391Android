@@ -33,4 +33,6 @@
     <string name="IDHint">Profile ID Number</string>
     <string name="addressBook">Address Book</string>
 
+    <string name="searchTag">Search</string>
+
 </resources>
