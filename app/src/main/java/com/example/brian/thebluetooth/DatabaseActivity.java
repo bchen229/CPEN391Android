@@ -65,7 +65,8 @@ public class DatabaseActivity extends AppCompatActivity {
                 DatabaseHelper.COL_Place
         };
         int[] toViewIDs = new int[]{R.id.txt1,R.id.txtViewItem,R.id.textPhone, R.id.textPlace};
-        adapter = new SimpleCursorAdapter(getBaseContext(),R.layout.activity_database_item,items,columns,toViewIDs,0);
+        adapter = new SimpleCursorAdapter(getBaseContext(),R.layout.activity_database_item,items,
+                columns,toViewIDs,0);
 
         listView.setAdapter(adapter);
         listView.setTextFilterEnabled(true);

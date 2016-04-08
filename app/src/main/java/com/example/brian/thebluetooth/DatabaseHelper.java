@@ -6,11 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.sql.SQLException;
-
-/**
- * Created by kimia on 2016-03-31.
- */
 public class DatabaseHelper extends SQLiteOpenHelper {
     //Declare variables for database
     public static final String DATABASE_NAME ="AddressBook2.db";
@@ -19,8 +14,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_Name ="Name";
     public static final String COL_Phone ="Phone";
     public static final String COL_Place ="Place";
-    private Context ourcontext;
-    private DatabaseHelper dbhelper;
     private SQLiteDatabase db;
     //When This constructor is called the database will be created
     public DatabaseHelper(Context context) {
@@ -61,8 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //Cursor provides random read/write access
     public Cursor getAllData(){
         db = this.getWritableDatabase();
-        Cursor result = db.rawQuery("select * from addresses2",null);
-        return result;
+        return db.rawQuery("select * from addresses2",null);
 
     }
 
@@ -77,7 +69,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValue.put(COL_Phone,Phone);
         contentValue.put(COL_Place, place);
 
-        db.update("addresses2",contentValue,"ID = ?",new String[]{ id });
+        db.update("addresses2",contentValue,COL_id + "= ?",new String[]{ id });
         return true;
 
     }
@@ -85,14 +77,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Integer deleteData(String id){
 
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete("addresses2","ID = ?",new String[]{id} );
+        return db.delete("addresses2",COL_id + "= ?",new String[]{id} );
 
     }
 
     public Cursor Getquery( String name){
         db = this.getWritableDatabase();
-        Cursor result = db.rawQuery("Select * from addresses2 WHERE name = '"+name+"'",null);
-        return result;
+        return db.rawQuery("Select * from addresses2 WHERE name = '"+name+"'",null);
     }
 
 }
