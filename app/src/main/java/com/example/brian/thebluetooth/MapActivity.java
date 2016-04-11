@@ -111,28 +111,32 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
                             getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                             popped = 1;
                         }
+                        //Our implementation forces us to clear the map on update, due to the directions API
                         mMap.clear();
 
-                        LatLng van = new LatLng(Lat, Lon);
+                        LatLng patientPos = new LatLng(Lat, Lon);
                         mkr = mMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(Lat, Lon)).snippet("Name: John Doe\n Age: 68").snippet("Age: 68").snippet("123 Fake Street")
+                                .position(patientPos).snippet("Name: John Doe\n Age: 68").snippet("Age: 68").snippet("123 Fake Street")
                                 .title("Patient Location"));
-                        mkr.setPosition(new LatLng(Lat, Lon));
+                        mkr.setPosition(patientPos);
+
+                        LatLng homeLatLng = new LatLng(Lat, Lon);
 
                         mkrHome = mMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(homeLat, homeLong)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                                .position(homeLatLng).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
                                 .title("Home Location"));
-                        mkrHome.setPosition(new LatLng(homeLat, homeLong));
+                        mkrHome.setPosition(homeLatLng);
                         mkrHome.showInfoWindow();
 
-                        CircleOptions circleOptions = new CircleOptions().center(new LatLng(homeLat, homeLong)).radius(300); // In meters
+                        CircleOptions circleOptions = new CircleOptions().center(homeLatLng).radius(300); // In meters
                         circleOptions.strokeWidth(5);
                         circleOptions.fillColor(Color.argb(20, 50, 0, 255));
+
                         // Get back the mutable Circle
                         Circle circle = mMap.addCircle(circleOptions);
 
                         String url = getMapsApiDirectionsUrl();
-                        //Log.d("URL: ", url);
+                        //begin requesting directions coordinates
                         ReadTask downloadTask = new ReadTask();
                         downloadTask.execute(url);
                         //addLines();
@@ -143,14 +147,6 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
         });
         thread2.start();
         return view;
-    }
-
-    @Override
-    public void onPause() {
-        thread1.interrupt();
-        thread2.interrupt();
-        runGPS = false;
-        super.onPause();
     }
 
     private String getMapsApiDirectionsUrl() {
@@ -258,26 +254,22 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng van = new LatLng(Lat, Lon);
+        LatLng patientPos = new LatLng(Lat, Lon);
         LatLng homeLatLng = new LatLng(homeLat, homeLong);
 
 
         // Instantiates a new CircleOptions object and defines the center and radius
-        CircleOptions circleOptions = new CircleOptions().center(new LatLng(homeLat, homeLong)).radius(distanceFence); // In meters
+        CircleOptions circleOptions = new CircleOptions().center(homeLatLng).radius(distanceFence); // In meters
         circleOptions.strokeWidth(5);
         circleOptions.fillColor(Color.argb(20, 50, 0, 255));
+
         // Get back the mutable Circle
         Circle circle = mMap.addCircle(circleOptions);
 
-  /*      try {
-            mMap.setMyLocationEnabled(true);
-        } catch (SecurityException E) {
-        }
-*/
         mkr = mMap.addMarker(new MarkerOptions()
-                .position(van).snippet("Name: John Doe\n Age: 68").snippet("Age: 68").snippet("123 Fake Street")
+                .position(patientPos).snippet("Name: John Doe\n Age: 68").snippet("Age: 68").snippet("123 Fake Street")
                 .title("Patient Location"));
-        mkr.setPosition(van);
+        mkr.setPosition(patientPos);
 
         mkrHome = mMap.addMarker(new MarkerOptions()
                 .position(homeLatLng).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
@@ -297,6 +289,16 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
         mapView.onResume();
         super.onResume();
     }
+
+
+    @Override
+    public void onPause() {
+        thread1.interrupt();
+        thread2.interrupt();
+        runGPS = false;
+        super.onPause();
+    }
+
 
     @Override
     public void onDestroy() {
@@ -378,6 +380,8 @@ public class MapActivity extends Fragment implements OnMapReadyCallback {
         if (longLatArray.length < 2) {
             return;
         }
+
+        //Parse out unwanted characters
 
         Latitude = longLatArray[0];
         Latitude = Latitude.replaceAll("\n", "");
